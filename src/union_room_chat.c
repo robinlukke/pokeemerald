@@ -2890,7 +2890,7 @@ static void DrawTextEntryMessage(u16 x, u8 *str, u8 bgColor, u8 fgColor, u8 shad
     strBuffer[1] = EXT_CTRL_CODE_MIN_LETTER_SPACING;
     strBuffer[2] = 8;
     StringCopy(&strBuffer[3], str);
-    AddTextPrinterParameterized3(WIN_TEXT_ENTRY, FONT_SHORT, x * 8, 1, color, TEXT_SKIP_DRAW, strBuffer);
+    AddTextPrinterParameterized3(WIN_TEXT_ENTRY, FONT_NORMAL, x * 8, 1, color, TEXT_SKIP_DRAW, strBuffer);
 }
 
 static void PrintCurrentKeyboardPage(void)
@@ -2925,7 +2925,7 @@ static void PrintCurrentKeyboardPage(void)
                 return;
 
             StringCopy(&str[3], sUnionRoomKeyboardText[page][i]);
-            AddTextPrinterParameterized3(WIN_KEYBOARD, FONT_SMALL, left, top, color, TEXT_SKIP_DRAW, str);
+            AddTextPrinterParameterized3(WIN_KEYBOARD, FONT_NORMAL, left, top, color, TEXT_SKIP_DRAW, str);
         }
     }
     else
@@ -2934,9 +2934,9 @@ static void PrintCurrentKeyboardPage(void)
         for (i = 0, top = 0; i < UNION_ROOM_KB_ROW_COUNT; i++, top += 12)
         {
             str2 = GetRegisteredTextByRow(i);
-            if (GetStringWidth(FONT_SMALL, str2, 0) <= 40)
+            if (GetStringWidth(FONT_NORMAL, str2, 0) <= 40)
             {
-                AddTextPrinterParameterized3(WIN_KEYBOARD, FONT_SMALL, left, top, color, TEXT_SKIP_DRAW, str2);
+                AddTextPrinterParameterized3(WIN_KEYBOARD, FONT_NORMAL, left, top, color, TEXT_SKIP_DRAW, str2);
             }
             else
             {
@@ -2945,10 +2945,10 @@ static void PrintCurrentKeyboardPage(void)
                 {
                     length--;
                     StringCopyN_Multibyte(str, str2, length);
-                } while (GetStringWidth(FONT_SMALL, str, 0) > 35);
+                } while (GetStringWidth(FONT_NORMAL, str, 0) > 35);
 
-                AddTextPrinterParameterized3(WIN_KEYBOARD, FONT_SMALL, left, top, color, TEXT_SKIP_DRAW, str);
-                AddTextPrinterParameterized3(WIN_KEYBOARD, FONT_SMALL, left + 35, top, color, TEXT_SKIP_DRAW, sText_Ellipsis);
+                AddTextPrinterParameterized3(WIN_KEYBOARD, FONT_NORMAL, left, top, color, TEXT_SKIP_DRAW, str);
+                AddTextPrinterParameterized3(WIN_KEYBOARD, FONT_NORMAL, left + 35, top, color, TEXT_SKIP_DRAW, sText_Ellipsis);
             }
         }
     }
@@ -3000,8 +3000,8 @@ static void ShowKeyboardSwapMenu(void)
 {
     FillWindowPixelBuffer(WIN_SWAP_MENU, PIXEL_FILL(1));
     DrawTextBorderOuter(WIN_SWAP_MENU, 1, 13);
-    PrintMenuActionTextsAtPos(WIN_SWAP_MENU, FONT_SHORT, 8, 1, 14, ARRAY_COUNT(sKeyboardPageTitleTexts), sKeyboardPageTitleTexts);
-    InitMenuNormal(WIN_SWAP_MENU, FONT_SHORT, 0, 1, 14, 5, GetCurrentKeyboardPage());
+    PrintMenuActionTextsAtPos(WIN_SWAP_MENU, FONT_NORMAL, 8, 1, 14, ARRAY_COUNT(sKeyboardPageTitleTexts), sKeyboardPageTitleTexts);
+    InitMenuNormal(WIN_SWAP_MENU, FONT_NORMAL, 0, 1, 14, 5, GetCurrentKeyboardPage());
     PutWindowTilemap(WIN_SWAP_MENU);
 }
 
@@ -3019,7 +3019,7 @@ static void PrintChatMessage(u16 row, u8 *str, u8 colorIdx)
     color[1] = colorIdx * 2 + 2;
     color[2] = colorIdx * 2 + 3;
     FillWindowPixelRect(WIN_CHAT_HISTORY, PIXEL_FILL(1), 0, row * 15, 168, 15);
-    AddTextPrinterParameterized3(WIN_CHAT_HISTORY, FONT_SHORT, 0, row * 15 + 1, color, TEXT_SKIP_DRAW, str);
+    AddTextPrinterParameterized3(WIN_CHAT_HISTORY, FONT_NORMAL, 0, row * 15 + 1, color, TEXT_SKIP_DRAW, str);
 }
 
 static void ResetGpuBgState(void)

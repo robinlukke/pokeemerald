@@ -332,7 +332,7 @@ static const s8 sCenterToCornerVecXs[8] ={-32, -16, -16, -32, -32};
 // 10 is ×1.0 TYPE_MUL_NORMAL
 // 05 is ×0.5 TYPE_MUL_NOT_EFFECTIVE
 // 00 is ×0.0 TYPE_MUL_NO_EFFECT
-const u8 gTypeEffectiveness[336] =
+const u8 gTypeEffectiveness[357] =
 {
     TYPE_NORMAL, TYPE_ROCK, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_NORMAL, TYPE_STEEL, TYPE_MUL_NOT_EFFECTIVE,
@@ -348,7 +348,6 @@ const u8 gTypeEffectiveness[336] =
     TYPE_WATER, TYPE_WATER, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_WATER, TYPE_GRASS, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_WATER, TYPE_GROUND, TYPE_MUL_SUPER_EFFECTIVE,
-    TYPE_WATER, TYPE_ROCK, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_WATER, TYPE_DRAGON, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_ELECTRIC, TYPE_WATER, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_ELECTRIC, TYPE_ELECTRIC, TYPE_MUL_NOT_EFFECTIVE,
@@ -383,12 +382,14 @@ const u8 gTypeEffectiveness[336] =
     TYPE_FIGHTING, TYPE_ROCK, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_FIGHTING, TYPE_DARK, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_FIGHTING, TYPE_STEEL, TYPE_MUL_SUPER_EFFECTIVE,
+	TYPE_FIGHTING, TYPE_FAIRY, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_POISON, TYPE_GRASS, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_POISON, TYPE_POISON, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_POISON, TYPE_GROUND, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_POISON, TYPE_ROCK, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_POISON, TYPE_GHOST, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_POISON, TYPE_STEEL, TYPE_MUL_NO_EFFECT,
+	TYPE_POISON, TYPE_FAIRY, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_GROUND, TYPE_FIRE, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_GROUND, TYPE_ELECTRIC, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_GROUND, TYPE_GRASS, TYPE_MUL_NOT_EFFECTIVE,
@@ -417,6 +418,7 @@ const u8 gTypeEffectiveness[336] =
     TYPE_BUG, TYPE_GHOST, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_BUG, TYPE_DARK, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_BUG, TYPE_STEEL, TYPE_MUL_NOT_EFFECTIVE,
+	TYPE_BUG, TYPE_FAIRY, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_ROCK, TYPE_FIRE, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_ROCK, TYPE_ICE, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_ROCK, TYPE_FIGHTING, TYPE_MUL_NOT_EFFECTIVE,
@@ -427,21 +429,26 @@ const u8 gTypeEffectiveness[336] =
     TYPE_GHOST, TYPE_NORMAL, TYPE_MUL_NO_EFFECT,
     TYPE_GHOST, TYPE_PSYCHIC, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_GHOST, TYPE_DARK, TYPE_MUL_NOT_EFFECTIVE,
-    TYPE_GHOST, TYPE_STEEL, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_GHOST, TYPE_GHOST, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_DRAGON, TYPE_DRAGON, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_DRAGON, TYPE_STEEL, TYPE_MUL_NOT_EFFECTIVE,
+	TYPE_DRAGON, TYPE_FAIRY, TYPE_MUL_NO_EFFECT,
     TYPE_DARK, TYPE_FIGHTING, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_DARK, TYPE_PSYCHIC, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_DARK, TYPE_GHOST, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_DARK, TYPE_DARK, TYPE_MUL_NOT_EFFECTIVE,
-    TYPE_DARK, TYPE_STEEL, TYPE_MUL_NOT_EFFECTIVE,
+	TYPE_DARK, TYPE_FAIRY, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_STEEL, TYPE_FIRE, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_STEEL, TYPE_WATER, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_STEEL, TYPE_ELECTRIC, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_STEEL, TYPE_ICE, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_STEEL, TYPE_ROCK, TYPE_MUL_SUPER_EFFECTIVE,
     TYPE_STEEL, TYPE_STEEL, TYPE_MUL_NOT_EFFECTIVE,
+	TYPE_STEEL, TYPE_FAIRY, TYPE_MUL_SUPER_EFFECTIVE,
+	TYPE_FAIRY, TYPE_DRAGON, TYPE_MUL_SUPER_EFFECTIVE,
+	TYPE_FAIRY, TYPE_FIGHTING, TYPE_MUL_SUPER_EFFECTIVE,
+	TYPE_FAIRY, TYPE_FIRE, TYPE_MUL_NOT_EFFECTIVE,
+	TYPE_FAIRY, TYPE_STEEL, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_FORESIGHT, TYPE_FORESIGHT, TYPE_MUL_NO_EFFECT,
     TYPE_NORMAL, TYPE_GHOST, TYPE_MUL_NO_EFFECT,
     TYPE_FIGHTING, TYPE_GHOST, TYPE_MUL_NO_EFFECT,
@@ -468,6 +475,7 @@ const u8 gTypeNames[NUMBER_OF_MON_TYPES][TYPE_NAME_LENGTH + 1] =
     [TYPE_ICE] = _("ICE"),
     [TYPE_DRAGON] = _("DRAGON"),
     [TYPE_DARK] = _("DARK"),
+	[TYPE_FAIRY] = _("FAIRY"),
 };
 
 // This is a factor in how much money you get for beating a trainer.
@@ -1962,6 +1970,13 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     u8 fixedIV;
     s32 i, j;
     u8 monsCount;
+	
+	u8 level;
+	u8 PlayerMonLevel;
+	u8 EnemyMonLevel;
+	u8 trainerClass;
+	u32 LevelDifference;
+	u32 EnemyMonLevelAdjusted;
 
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
@@ -2003,25 +2018,83 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case 0:
             {
                 const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
+				
+				PlayerMonLevel = GetHighestLevelInPlayerParty();
+				EnemyMonLevel = partyData[i].lvl;
+
+				level = EnemyMonLevel;
+
+				LevelDifference = (PlayerMonLevel - EnemyMonLevel);
+				EnemyMonLevelAdjusted = (GetHighestLevelInPlayerParty() - 4);
+
+				if (EnemyMonLevel >= PlayerMonLevel)
+				{
+					level = EnemyMonLevel;
+				}
+				else if (LevelDifference > 3)
+				{
+					level = EnemyMonLevelAdjusted;
+				}
+
+				if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && ((gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_LEADER)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_AQUA_LEADER)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_MAGMA_LEADER)
+					|  (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_ELITE_FOUR)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)))
+					{
+						if (EnemyMonLevel < PlayerMonLevel)
+							level = PlayerMonLevel;
+						else
+							level = EnemyMonLevel;
+					}
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                CreateMon(&party[i], partyData[i].species, level, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 break;
             }
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
             {
                 const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerNum].party.NoItemCustomMoves;
+				
+				PlayerMonLevel = GetHighestLevelInPlayerParty();
+				EnemyMonLevel = partyData[i].lvl;
+
+				level = EnemyMonLevel;
+
+				LevelDifference = (PlayerMonLevel - EnemyMonLevel);
+				EnemyMonLevelAdjusted = (GetHighestLevelInPlayerParty() - 4);
+
+				if (EnemyMonLevel >= PlayerMonLevel)
+				{
+					level = EnemyMonLevel;
+				}
+				else if (LevelDifference > 3)
+				{
+					level = EnemyMonLevelAdjusted;
+				}
+
+				if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && ((gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_LEADER)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_AQUA_LEADER)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_MAGMA_LEADER)
+					|  (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_ELITE_FOUR)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)))
+					{
+						if (EnemyMonLevel < PlayerMonLevel)
+							level = PlayerMonLevel;
+						else
+							level = EnemyMonLevel;
+					}
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                CreateMon(&party[i], partyData[i].species, level, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
                 {
@@ -2033,13 +2106,42 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_HELD_ITEM:
             {
                 const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerNum].party.ItemDefaultMoves;
+				
+				PlayerMonLevel = GetHighestLevelInPlayerParty();
+				EnemyMonLevel = partyData[i].lvl;
+
+				level = EnemyMonLevel;
+
+				LevelDifference = (PlayerMonLevel - EnemyMonLevel);
+				EnemyMonLevelAdjusted = (GetHighestLevelInPlayerParty() - 4);
+
+				if (EnemyMonLevel >= PlayerMonLevel)
+				{
+					level = EnemyMonLevel;
+				}
+				else if (LevelDifference > 3)
+				{
+					level = EnemyMonLevelAdjusted;
+				}
+
+				if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && ((gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_LEADER)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_AQUA_LEADER)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_MAGMA_LEADER)
+					|  (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_ELITE_FOUR)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)))
+					{
+						if (EnemyMonLevel < PlayerMonLevel)
+							level = PlayerMonLevel;
+						else
+							level = EnemyMonLevel;
+					}
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                CreateMon(&party[i], partyData[i].species, level, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 break;
@@ -2047,13 +2149,42 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
             case F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM:
             {
                 const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerNum].party.ItemCustomMoves;
+				
+				PlayerMonLevel = GetHighestLevelInPlayerParty();
+				EnemyMonLevel = partyData[i].lvl;
+
+				level = EnemyMonLevel;
+
+				LevelDifference = (PlayerMonLevel - EnemyMonLevel);
+				EnemyMonLevelAdjusted = (GetHighestLevelInPlayerParty() - 4);
+
+				if (EnemyMonLevel >= PlayerMonLevel)
+				{
+					level = EnemyMonLevel;
+				}
+				else if (LevelDifference > 3)
+				{
+					level = EnemyMonLevelAdjusted;
+				}
+
+				if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) && ((gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_LEADER)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_AQUA_LEADER)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_MAGMA_LEADER)
+					|  (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_ELITE_FOUR)
+					| (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION)))
+					{
+						if (EnemyMonLevel < PlayerMonLevel)
+							level = PlayerMonLevel;
+						else
+							level = EnemyMonLevel;
+					}
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != EOS; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                CreateMon(&party[i], partyData[i].species, level, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
@@ -2834,15 +2965,16 @@ void SpriteCB_HideAsMoveTarget(struct Sprite *sprite)
 
 void SpriteCB_OpponentMonFromBall(struct Sprite *sprite)
 {
-    if (sprite->affineAnimEnded)
-    {
-        if (!(gHitMarker & HITMARKER_NO_ANIMATIONS) || gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
-        {
-            if (HasTwoFramesAnimation(sprite->sSpeciesId))
-                StartSpriteAnim(sprite, 1);
-        }
-        BattleAnimateFrontSprite(sprite, sprite->sSpeciesId, TRUE, 1);
-    }
+//    if (sprite->affineAnimEnded)
+//    {
+//        if (!(gHitMarker & HITMARKER_NO_ANIMATIONS) || gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
+//        {
+//            if (HasTwoFramesAnimation(sprite->sSpeciesId))
+//                StartSpriteAnim(sprite, 1);
+//        }
+//        BattleAnimateFrontSprite(sprite, sprite->sSpeciesId, TRUE, 1);
+//    }
+	sprite->callback = SpriteCallbackDummy;
 }
 
 // This callback is frequently overwritten by SpriteCB_TrainerSlideIn
@@ -3085,8 +3217,6 @@ static void BattleStartClearSetData(void)
     }
     else if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)) && GetBattleSceneInRecordedBattle())
         gHitMarker |= HITMARKER_NO_ANIMATIONS;
-
-    gBattleScripting.battleStyle = gSaveBlock2Ptr->optionsBattleStyle;
 
     gMultiHitCounter = 0;
     gBattleOutcome = 0;
@@ -4628,6 +4758,14 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
 
     if (holdEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (0xFFFF * holdEffectParam) / 100)
         speedBattler1 = UINT_MAX;
+	
+	if (holdEffect == HOLD_EFFECT_LIGHT_BALL && gBattleMons[battler1].species == SPECIES_PIKACHU)
+        speedBattler1 *= 2;
+	
+	if (gBattleMons[battler1].ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
+        speedBattler1 = (150 * speedBattler1) / 100;
+    if (gBattleMons[battler1].ability == ABILITY_MINUS && ABILITY_ON_FIELD2(ABILITY_PLUS))
+        speedBattler1 = (150 * speedBattler1) / 100;
 
     // check second battlerId's speed
 
@@ -4662,6 +4800,14 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
 
     if (holdEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (0xFFFF * holdEffectParam) / 100)
         speedBattler2 = UINT_MAX;
+	
+	if (holdEffect == HOLD_EFFECT_LIGHT_BALL && gBattleMons[battler2].species == SPECIES_PIKACHU)
+        speedBattler2 *= 2;
+
+	if (gBattleMons[battler2].ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
+        speedBattler2 = (150 * speedBattler2) / 100;
+    if (gBattleMons[battler2].ability == ABILITY_MINUS && ABILITY_ON_FIELD2(ABILITY_PLUS))
+        speedBattler2 = (150 * speedBattler2) / 100;
 
     if (ignoreChosenMoves)
     {
@@ -5127,15 +5273,8 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
     if (!gPaletteFade.active)
     {
         ResetSpriteData();
-        if (gLeveledUpInBattle == 0 || gBattleOutcome != B_OUTCOME_WON)
-        {
-            gBattleMainFunc = ReturnFromBattleToOverworld;
-            return;
-        }
-        else
-        {
-            gBattleMainFunc = TryEvolvePokemon;
-        }
+        gBattleMainFunc = ReturnFromBattleToOverworld;
+        return;
     }
 
     FreeAllWindowBuffers();
@@ -5235,3 +5374,40 @@ void RunBattleScriptCommands(void)
     if (gBattleControllerExecFlags == 0)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
 }
+
+// type icons
+/* static void SetTypeIconSpriteInvisibility(u8 spriteId, bool8 invisible)
+{
+    gSprites[spriteId].invisible = invisible;
+}
+
+void SetTypeIconPal(u8 typeId, u8 spriteId)
+{
+    struct Sprite *sprite;
+
+    sprite = &gSprites[spriteId];
+    StartSpriteAnim(sprite, typeId);
+    sprite->oam.paletteNum = gMoveTypeToOamPaletteNum[typeId];
+    SetTypeIconSpriteInvisibility(spriteId, FALSE);
+}
+
+void LoadTypeIcon(u8 type)
+{
+    if (gBattleMoveTypeSpriteId == MAX_SPRITES)
+    {
+        LoadCompressedSpriteSheet(&gSpriteSheet_MoveTypes);
+        gBattleMoveTypeSpriteId = CreateSprite(&gSpriteTemplate_MoveTypes, 208, 128, 0);
+        gSprites[gBattleMoveTypeSpriteId].oam.priority = 0;
+        SetTypeIconPal(type, gBattleMoveTypeSpriteId);
+    }
+}
+
+void DestroyTypeIcon(void)
+{
+    if (gBattleMoveTypeSpriteId != MAX_SPRITES)
+    {
+        DestroySpriteAndFreeResources(&gSprites[gBattleMoveTypeSpriteId]);
+        gBattleMoveTypeSpriteId = MAX_SPRITES;
+    }
+} */
+

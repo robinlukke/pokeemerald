@@ -1940,7 +1940,7 @@ static void AddContestTextPrinter(int windowId, u8 *str, int x)
     struct TextPrinterTemplate textPrinter;
     textPrinter.currentChar = str;
     textPrinter.windowId = windowId;
-    textPrinter.fontId = FONT_NARROW;
+    textPrinter.fontId = FONT_NORMAL;
     textPrinter.x = x;
     textPrinter.y = 2;
     textPrinter.currentX = x;
@@ -2603,11 +2603,11 @@ void ShowContestEntryMonPic(void)
         if (gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK)
         {
             if (!(gLinkContestFlags & LINK_CONTEST_FLAG_HAS_RS_PLAYER))
-                DoMonFrontSpriteAnimation(&gSprites[spriteId], species, FALSE, 0);
+                DoMonFrontSpriteAnimation(&gSprites[spriteId], species, FALSE, SKIP_FRONT_ANIM);
         }
         else
         {
-            DoMonFrontSpriteAnimation(&gSprites[spriteId], species, FALSE, 0);
+            DoMonFrontSpriteAnimation(&gSprites[spriteId], species, FALSE, SKIP_FRONT_ANIM);
         }
 
         gTasks[taskId].data[2] = spriteId;

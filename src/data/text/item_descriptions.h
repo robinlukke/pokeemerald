@@ -498,77 +498,77 @@ static const u8 sRetroMailDesc[] = _(
 
 // Berries
 static const u8 sCheriBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "heals paralysis\n"
     "in battle.");
 
 static const u8 sChestoBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "awakens POKéMON\n"
     "in battle.");
 
 static const u8 sPechaBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "heals poisoning\n"
     "in battle.");
 
 static const u8 sRawstBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "heals a burn in\n"
     "battle.");
 
 static const u8 sAspearBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "defrosts POKéMON\n"
     "in battle.");
 
 static const u8 sLeppaBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores 10 PP in\n"
     "battle.");
 
 static const u8 sOranBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores 10 HP in\n"
     "battle.");
 
 static const u8 sPersimBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "heals confusion\n"
     "in battle.");
 
 static const u8 sLumBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "heals any status\n"
     "problem in battle.");
 
 static const u8 sSitrusBerryDesc[] = _(
-    "A hold item that\n"
-    "restores 30 HP in\n"
-    "battle.");
+    "Held item:\n"
+    "restores a quarter of\n"
+    "max HP in battle.");
 
 static const u8 sFigyBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores HP but\n"
     "may confuse.");
 
 static const u8 sWikiBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores HP but\n"
     "may confuse.");
 
 static const u8 sMagoBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores HP but\n"
     "may confuse.");
 
 static const u8 sAguavBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores HP but\n"
     "may confuse.");
 
 static const u8 sIapapaBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores HP but\n"
     "may confuse.");
 
@@ -673,37 +673,37 @@ static const u8 sBelueBerryDesc[] = _(
     "to grow BELUE.");
 
 static const u8 sLiechiBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises ATTACK in\n"
     "a pinch.");
 
 static const u8 sGanlonBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises DEFENSE in\n"
     "a pinch.");
 
 static const u8 sSalacBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises SPEED in\n"
     "a pinch.");
 
 static const u8 sPetayaBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises SP. ATK in\n"
     "a pinch.");
 
 static const u8 sApicotBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises SP. DEF in\n"
     "a pinch.");
 
 static const u8 sLansatBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "ups the critical-\n"
     "hit rate in a pinch.");
 
 static const u8 sStarfBerryDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "sharply boosts a\n"
     "stat in a pinch.");
 
@@ -714,37 +714,37 @@ static const u8 sEnigmaBerryDesc[] = _(
 
 // Hold items
 static const u8 sBrightPowderDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "casts a glare to\n"
     "reduce accuracy.");
 
 static const u8 sWhiteHerbDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores any\n"
     "lowered stat.");
 
 static const u8 sMachoBraceDesc[] = _(
-    "A hold item that\n"
-    "promotes growth,\n"
+    "Held item: allows\n"
+    "IV inheritance,\n"
     "but reduces SPEED.");
 
 static const u8 sExpShareDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "gets EXP. points\n"
     "from battles.");
 
 static const u8 sQuickClawDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "occasionally allows\n"
     "the first strike.");
 
 static const u8 sSootheBellDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "calms spirits and\n"
     "fosters friendship.");
 
 static const u8 sMentalHerbDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "snaps POKéMON out\n"
     "of infatuation.");
 
@@ -754,12 +754,12 @@ static const u8 sChoiceBandDesc[] = _(
     "only that move.");
 
 static const u8 sKingsRockDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "may cause flinching\n"
     "when the foe is hit.");
 
 static const u8 sSilverPowderDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "BUG-type moves.");
 
@@ -769,7 +769,7 @@ static const u8 sAmuletCoinDesc[] = _(
     "holder takes part.");
 
 static const u8 sCleanseTagDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "helps repel wild\n"
     "POKéMON.");
 
@@ -779,47 +779,47 @@ static const u8 sSoulDewDesc[] = _(
     "LATIOS & LATIAS.");
 
 static const u8 sDeepSeaToothDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the SP. ATK\n"
     "of CLAMPERL.");
 
 static const u8 sDeepSeaScaleDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the SP. DEF\n"
     "of CLAMPERL.");
 
 static const u8 sSmokeBallDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "assures fleeing\n"
     "from wild POKéMON.");
 
 static const u8 sEverstoneDesc[] = _(
     "A wondrous hold\n"
-    "item that prevents\n"
-    "evolution.");
+    "item that allows\n"
+    "NATURE inheritance.");
 
 static const u8 sFocusBandDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "occasionally\n"
     "prevents fainting.");
 
 static const u8 sLuckyEggDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "boosts EXP. points\n"
     "earned in battle.");
 
 static const u8 sScopeLensDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "improves the\n"
     "critical-hit rate.");
 
 static const u8 sMetalCoatDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "STEEL-type moves.");
 
 static const u8 sLeftoversDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "gradually restores\n"
     "HP in battle.");
 
@@ -829,82 +829,82 @@ static const u8 sDragonScaleDesc[] = _(
     "type POKéMON.");
 
 static const u8 sLightBallDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the SP. ATK\n"
     "of PIKACHU.");
 
 static const u8 sSoftSandDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "GROUND-type moves.");
 
 static const u8 sHardStoneDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "ROCK-type moves.");
 
 static const u8 sMiracleSeedDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "GRASS-type moves.");
 
 static const u8 sBlackGlassesDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "DARK-type moves.");
 
 static const u8 sBlackBeltDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "boosts FIGHTING-\n"
     "type moves.");
 
 static const u8 sMagnetDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "boosts ELECTRIC-\n"
     "type moves.");
 
 static const u8 sMysticWaterDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "WATER-type moves.");
 
 static const u8 sSharpBeakDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "FLYING-type moves.");
 
 static const u8 sPoisonBarbDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "POISON-type moves.");
 
 static const u8 sNeverMeltIceDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "ICE-type moves.");
 
 static const u8 sSpellTagDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "GHOST-type moves.");
 
 static const u8 sTwistedSpoonDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "boosts PSYCHIC-\n"
     "type moves.");
 
 static const u8 sCharcoalDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "FIRE-type moves.");
 
 static const u8 sDragonFangDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "DRAGON-type moves.");
 
 static const u8 sSilkScarfDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises the power of\n"
     "NORMAL-type moves.");
 
@@ -913,62 +913,62 @@ static const u8 sUpGradeDesc[] = _(
     "by SILPH CO.");
 
 static const u8 sShellBellDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "restores HP upon\n"
     "striking the foe.");
 
 static const u8 sSeaIncenseDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "slightly boosts\n"
     "WATER-type moves.");
 
 static const u8 sLaxIncenseDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "slightly lowers the\n"
     "foe's accuracy.");
 
 static const u8 sLuckyPunchDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises CHANSEY's\n"
     "critical-hit rate.");
 
 static const u8 sMetalPowderDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises DITTO's\n"
     "DEFENSE.");
 
 static const u8 sThickClubDesc[] = _(
-    "A hold item that \n"
+    "Held item: \n"
     "raises CUBONE or\n"
     "MAROWAK's ATTACK.");
 
 static const u8 sStickDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises FARFETCH'D's\n"
     "critical-hit ratio.");
 
 static const u8 sRedScarfDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises COOL in\n"
     "CONTESTS.");
 
 static const u8 sBlueScarfDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises BEAUTY in\n"
     "CONTESTS.");
 
 static const u8 sPinkScarfDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises CUTE in\n"
     "CONTESTS.");
 
 static const u8 sGreenScarfDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises SMART in\n"
     "CONTESTS.");
 
 static const u8 sYellowScarfDesc[] = _(
-    "A hold item that\n"
+    "Held item:\n"
     "raises TOUGH in\n"
     "CONTESTS.");
 

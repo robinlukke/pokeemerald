@@ -3,21 +3,23 @@
 
 #include "characters.h"
 
+
+
 // Given as a text speed when all the text should be
 // loaded at once but not copied to vram yet.
 #define TEXT_SKIP_DRAW 0xFF
 
 enum {
-    FONT_SMALL,
+			   
     FONT_NORMAL,
-    FONT_SHORT,
-    FONT_SHORT_COPY_1,
-    FONT_SHORT_COPY_2,
-    FONT_SHORT_COPY_3,
+			   
+					  
+					  
+					  
     FONT_BRAILLE,
-    FONT_NARROW,
-    FONT_SMALL_NARROW, // Very similar to FONT_SMALL, some glyphs are narrower
-    FONT_BOLD, // JP glyph set only
+	FONT_BORDER,
+																			  
+								   
 };
 
 // Return values for font functions
@@ -146,6 +148,7 @@ void RestoreTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);
 void DecompressGlyphTile(const void *src_, void *dest_);
 void CopyGlyphToWindow(struct TextPrinter *x);
 void ClearTextSpan(struct TextPrinter *textPrinter, u32 width);
+
 
 void TextPrinterInitDownArrowCounters(struct TextPrinter *textPrinter);
 void TextPrinterDrawDownArrow(struct TextPrinter *textPrinter);

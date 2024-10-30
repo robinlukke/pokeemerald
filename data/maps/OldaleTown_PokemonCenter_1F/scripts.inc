@@ -62,3 +62,79 @@ OldaleTown_PokemonCenter_1F_Text_TradedInWirelessClub:
 	.string "the second floor was built recently.\p"
 	.string "I traded POKéMON right away.$"
 
+Script_Synchronise_NPC::
+	lock
+	faceplayer
+	goto_if_set FLAG_SYNCHRONIZE_ENABLED, Synchronise_NPC_DoYouWantMeToStop
+	showmoneybox 0, 0
+	msgbox Text_Synchronise_NPC_Intro, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, Synchronise_NPC_PleaseComeAgain
+	checkmoney 1000
+	goto_if_eq VAR_RESULT, FALSE, Synchronise_NPC_NotEnoughMoney
+	removemoney 1000
+	updatemoneybox
+	playse SE_SHOP
+	msgbox Text_Synchronise_NPC_ExplainSynchronise
+	hidemoneybox
+	setflag FLAG_SYNCHRONIZE_ENABLED
+	release
+	end
+
+OldaleTown_EventScript_Kirlia::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_KIRLIA, CRY_MODE_NORMAL
+	msgbox OldaleTown_House1_Text_Kirlia, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+	
+Synchronise_NPC_DoYouWantMeToStop::
+	msgbox Text_Synchronise_NPC_DoYouWantMeToStop, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, NO, Synchronise_NPC_PleaseComeAgain
+	msgbox Text_Synchronise_NPC_StoppedSynchronise
+	clearflag FLAG_SYNCHRONIZE_ENABLED
+	release
+	end
+
+Synchronise_NPC_PleaseComeAgain::
+	msgbox Text_Synchronise_NPC_PleaseComeAgain
+	hidemoneybox
+	release
+	end
+
+Text_Synchronise_NPC_Intro::
+	.string "Shall I foresee the NATURE of those\n"
+	.string "fateful allies you have yet to meet?\p"
+	.string "I'll charge you just ¥1000.\n"
+	.string "Wouldn't you like to know your fate?$"
+
+Text_Synchronise_NPC_PleaseComeAgain::
+	.string "Very well, please come again if\n"
+	.string "you desire to change your fate.$"
+
+Text_Synchronise_NPC_ExplainSynchronise::
+	.string "Very well, now every wild POKéMON will\n"
+	.string "synchronise with your leading partner.\p"
+	.string "You can talk to me again if you\n"
+	.string "want me to stop using my powers.$"
+
+Text_Synchronise_NPC_DoYouWantMeToStop::
+	.string "Do you want me to stop my power?$"
+
+Text_Synchronise_NPC_StoppedSynchronise::
+	.string "Very well, it is done. I can no longer\n"
+	.string "foresee the fate of your fateful allies.$"
+
+Synchronise_NPC_NotEnoughMoney::
+	msgbox Text_Synchronise_NPC_NotEnoughMoney
+	hidemoneybox
+	release
+	end
+
+Text_Synchronise_NPC_NotEnoughMoney:
+	.string "You don't have enough money.$"
+
+OldaleTown_House1_Text_Kirlia:
+	.string "KIRLIA: Kiii.$"

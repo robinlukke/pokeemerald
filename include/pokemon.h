@@ -305,12 +305,6 @@ struct SpeciesInfo
  /* 0x06 */ u8 types[2];
  /* 0x08 */ u8 catchRate;
  /* 0x09 */ u8 expYield;
- /* 0x0A */ u16 evYield_HP:2;
- /* 0x0A */ u16 evYield_Attack:2;
- /* 0x0A */ u16 evYield_Defense:2;
- /* 0x0A */ u16 evYield_Speed:2;
- /* 0x0B */ u16 evYield_SpAttack:2;
- /* 0x0B */ u16 evYield_SpDefense:2;
  /* 0x0C */ u16 itemCommon;
  /* 0x0E */ u16 itemRare;
  /* 0x10 */ u8 genderRatio;
@@ -324,6 +318,10 @@ struct SpeciesInfo
             u8 noFlip : 1;
 };
 
+#define SPLIT_PHYSICAL 0
+#define SPLIT_SPECIAL 1
+#define SPLIT_STATUS 2
+
 struct BattleMove
 {
     u8 effect;
@@ -335,6 +333,7 @@ struct BattleMove
     u8 target;
     s8 priority;
     u8 flags;
+	u8 split;
 };
 
 #define SPINDA_SPOT_WIDTH 16
@@ -491,7 +490,7 @@ s32 GetBattlerMultiplayerId(u16 id);
 u8 GetTrainerEncounterMusicId(u16 trainerOpponentId);
 u16 ModifyStatByNature(u8 nature, u16 n, u8 statIndex);
 void AdjustFriendship(struct Pokemon *mon, u8 event);
-void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies);
+//void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies);
 u16 GetMonEVCount(struct Pokemon *mon);
 void RandomlyGivePartyPokerus(struct Pokemon *party);
 u8 CheckPartyPokerus(struct Pokemon *party, u8 selection);
@@ -543,5 +542,8 @@ bool8 HasTwoFramesAnimation(u16 species);
 struct MonSpritesGfxManager *CreateMonSpritesGfxManager(u8 managerId, u8 mode);
 void DestroyMonSpritesGfxManager(u8 managerId);
 u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum);
+
+u32 CanSpeciesLearnTMHM(u16 species, u8 tm);
+u16 MonTryLearningNewMoveEvolution(struct Pokemon *mon, bool8 firstMove);
 
 #endif // GUARD_POKEMON_H

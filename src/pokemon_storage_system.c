@@ -52,9 +52,9 @@
 
 // PC main menu options
 enum {
+	OPTION_MOVE_MONS,
     OPTION_WITHDRAW,
     OPTION_DEPOSIT,
-    OPTION_MOVE_MONS,
     OPTION_MOVE_ITEMS,
     OPTION_EXIT,
     OPTIONS_COUNT
@@ -1817,12 +1817,12 @@ static u8 HandleChooseBoxMenuInput(void)
     }
     if (JOY_NEW(DPAD_LEFT))
     {
-        PlaySE(SE_SELECT);
+        PlaySE(SE_RG_BAG_CURSOR);
         ChooseBoxMenu_MoveLeft();
     }
     else if (JOY_NEW(DPAD_RIGHT))
     {
-        PlaySE(SE_SELECT);
+        PlaySE(SE_RG_BAG_CURSOR);
         ChooseBoxMenu_MoveRight();
     }
     return BOXID_NONE_CHOSEN;
@@ -2304,9 +2304,11 @@ static void Task_PokeStorageMain(u8 taskId)
             }
             break;
         case INPUT_CLOSE_BOX:
+			PlaySE(SE_PC_OFF);
             SetPokeStorageTask(Task_OnCloseBoxPressed);
             break;
         case INPUT_PRESSED_B:
+			PlaySE(SE_RG_BAG_POCKET);
             SetPokeStorageTask(Task_OnBPressed);
             break;
         case INPUT_BOX_OPTIONS:
@@ -2317,7 +2319,7 @@ static void Task_PokeStorageMain(u8 taskId)
             SetPokeStorageTask(Task_OnSelectedMon);
             break;
         case INPUT_SCROLL_RIGHT:
-            PlaySE(SE_SELECT);
+            PlaySE(SE_DEX_PAGE);
             sStorage->newCurrBoxId = StorageGetCurrentBox() + 1;
             if (sStorage->newCurrBoxId >= TOTAL_BOXES_COUNT)
                 sStorage->newCurrBoxId = 0;
@@ -2333,7 +2335,7 @@ static void Task_PokeStorageMain(u8 taskId)
             }
             break;
         case INPUT_SCROLL_LEFT:
-            PlaySE(SE_SELECT);
+            PlaySE(SE_DEX_PAGE);
             sStorage->newCurrBoxId = StorageGetCurrentBox() - 1;
             if (sStorage->newCurrBoxId < 0)
                 sStorage->newCurrBoxId = TOTAL_BOXES_COUNT - 1;
@@ -2405,7 +2407,7 @@ static void Task_PokeStorageMain(u8 taskId)
             SetPokeStorageTask(Task_GiveMovingItemToMon);
             break;
         case INPUT_SWITCH_ITEMS:
-            PlaySE(SE_SELECT);
+            PlaySE(SE_DEX_PAGE);
             SetPokeStorageTask(Task_SwitchSelectedItem);
             break;
         case INPUT_MULTIMOVE_START:
@@ -2663,10 +2665,10 @@ static void Task_OnSelectedMon(u8 taskId)
             {
                 sStorage->state = 3;
             }
-            else if (sStorage->displayMonIsEgg)
+/*             else if (sStorage->displayMonIsEgg)
             {
                 sStorage->state = 5; // Cannot release an Egg.
-            }
+            } */
             else if (ItemIsMail(sStorage->displayMonItemId))
             {
                 sStorage->state = 4;
@@ -3992,16 +3994,16 @@ static void PrintDisplayMonInfo(void)
     if (sStorage->boxOption != OPTION_MOVE_ITEMS)
     {
         AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_NORMAL, sStorage->displayMonNameText, 6, 0, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SHORT, sStorage->displayMonSpeciesName, 6, 15, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SHORT, sStorage->displayMonGenderLvlText, 10, 29, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SMALL, sStorage->displayMonItemName, 6, 43, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_NORMAL, sStorage->displayMonSpeciesName, 6, 15, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_NORMAL, sStorage->displayMonGenderLvlText, 10, 29, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_NORMAL, sStorage->displayMonItemName, 6, 43, TEXT_SKIP_DRAW, NULL);
     }
     else
     {
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SMALL, sStorage->displayMonItemName, 6, 0, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_NORMAL, sStorage->displayMonItemName, 6, 0, TEXT_SKIP_DRAW, NULL);
         AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_NORMAL, sStorage->displayMonNameText, 6, 13, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SHORT, sStorage->displayMonSpeciesName, 6, 28, TEXT_SKIP_DRAW, NULL);
-        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SHORT, sStorage->displayMonGenderLvlText, 10, 42, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_NORMAL, sStorage->displayMonSpeciesName, 6, 28, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_NORMAL, sStorage->displayMonGenderLvlText, 10, 42, TEXT_SKIP_DRAW, NULL);
     }
 
     CopyWindowToVram(WIN_DISPLAY_INFO, COPYWIN_GFX);
@@ -7126,11 +7128,11 @@ static u8 InBoxInput_Normal(void)
         if (JOY_NEW(B_BUTTON))
             return INPUT_PRESSED_B;
 
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+        //if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
         {
-            if (JOY_HELD(L_BUTTON))
+            if (JOY_NEW(L_BUTTON))
                 return INPUT_SCROLL_LEFT;
-            if (JOY_HELD(R_BUTTON))
+            if (JOY_NEW(R_BUTTON))
                 return INPUT_SCROLL_RIGHT;
         }
 
@@ -7295,11 +7297,11 @@ static u8 InBoxInput_MovingMultiple(void)
     }
     else
     {
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+        //if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
         {
-            if (JOY_HELD(L_BUTTON))
+            if (JOY_NEW(L_BUTTON))
                 return INPUT_SCROLL_LEFT;
-            if (JOY_HELD(R_BUTTON))
+            if (JOY_NEW(R_BUTTON))
                 return INPUT_SCROLL_RIGHT;
         }
 
@@ -7458,16 +7460,16 @@ static u8 HandleInput_OnBox(void)
             break;
         }
 
-        if (JOY_HELD(DPAD_LEFT))
+        if (JOY_NEW(DPAD_LEFT))
             return INPUT_SCROLL_LEFT;
-        if (JOY_HELD(DPAD_RIGHT))
+        if (JOY_NEW(DPAD_RIGHT))
             return INPUT_SCROLL_RIGHT;
 
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+        //if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
         {
-            if (JOY_HELD(L_BUTTON))
+            if (JOY_NEW(L_BUTTON))
                 return INPUT_SCROLL_LEFT;
-            if (JOY_HELD(R_BUTTON))
+            if (JOY_NEW(R_BUTTON))
                 return INPUT_SCROLL_RIGHT;
         }
 
@@ -8040,12 +8042,12 @@ static s16 HandleMenuInput(void)
 
         if (JOY_NEW(DPAD_UP))
         {
-            PlaySE(SE_SELECT);
+            PlaySE(SE_RG_BAG_CURSOR);
             Menu_MoveCursor(-1);
         }
         else if (JOY_NEW(DPAD_DOWN))
         {
-            PlaySE(SE_SELECT);
+            PlaySE(SE_RG_BAG_CURSOR);
             Menu_MoveCursor(1);
         }
     } while (0);

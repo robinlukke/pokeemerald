@@ -500,7 +500,7 @@ void PrintMysteryGiftOrEReaderHeader(bool8 isEReader, bool32 useCancel)
     }
 
     AddTextPrinterParameterized4(WIN_HEADER, FONT_NORMAL, 4, 1, 0, 0, sTextColors_Header, TEXT_SKIP_DRAW, title);
-    AddTextPrinterParameterized4(WIN_HEADER, FONT_SMALL, GetStringRightAlignXOffset(FONT_SMALL, options, 0xDE), 1, 0, 0, sTextColors_Header, TEXT_SKIP_DRAW, options);
+    AddTextPrinterParameterized4(WIN_HEADER, FONT_NORMAL, GetStringRightAlignXOffset(FONT_NORMAL, options, 0xDE), 1, 0, 0, sTextColors_Header, TEXT_SKIP_DRAW, options);
     CopyWindowToVram(WIN_HEADER, COPYWIN_GFX);
     PutWindowTilemap(WIN_HEADER);
 }

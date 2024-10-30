@@ -90,4 +90,6 @@ void BufferMoveDeleterNicknameAndMove(void);
 void GetNumMovesSelectedMonHas(void);
 void MoveDeleterChooseMoveToForget(void);
 
+u8 ReturnTMHMId(u16 move);
+
 #endif // GUARD_PARTY_MENU_H

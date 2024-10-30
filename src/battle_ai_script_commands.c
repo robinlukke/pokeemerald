@@ -2285,3 +2285,4 @@ static bool8 AIStackPop(void)
         return FALSE;
     }
 }
+

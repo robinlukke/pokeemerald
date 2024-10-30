@@ -315,7 +315,7 @@ static const struct ListMenuTemplate sDecorationItemsListMenuTemplate =
     .lettersSpacing = FALSE,
     .itemVerticalPadding = 0,
     .scrollMultiple = LIST_NO_MULTIPLE_SCROLL,
-    .fontId = FONT_NARROW,
+    .fontId = FONT_NORMAL,
     .cursorKind = CURSOR_BLACK_ARROW,
 };
 

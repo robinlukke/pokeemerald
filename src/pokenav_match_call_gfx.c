@@ -881,7 +881,7 @@ static void CreateMatchCallList(void)
     template.listTop = 1;
     template.maxShowed = 8;
     template.fillValue = 3;
-    template.fontId = FONT_NARROW;
+    template.fontId = FONT_NORMAL;
     template.bufferItemFunc = (PokenavListBufferItemFunc)BufferMatchCallNameAndDesc;
     template.iconDrawFunc = TryDrawRematchPokeballIcon;
     CreatePokenavList(&sMatchCallBgTemplates[2], &template, 2);
@@ -1007,14 +1007,14 @@ static void PrintNumberOfBattles(u16 windowId)
 static void PrintMatchCallInfoLabel(u16 windowId, const u8 *str, int top)
 {
     int y = top * 16 + 1;
-    AddTextPrinterParameterized(windowId, FONT_NARROW, str, 2, y, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, str, 2, y, TEXT_SKIP_DRAW, NULL);
 }
 
 static void PrintMatchCallInfoNumber(u16 windowId, const u8 *str, int top)
 {
-    int x = GetStringRightAlignXOffset(FONT_NARROW, str, 86);
+    int x = GetStringRightAlignXOffset(FONT_NORMAL, str, 86);
     int y = top * 16 + 1;
-    AddTextPrinterParameterized(windowId, FONT_NARROW, str, x, y, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, str, x, y, TEXT_SKIP_DRAW, NULL);
 }
 
 static void PrintMatchCallLocation(struct Pokenav_MatchCallGfx *gfx, int delta)
@@ -1028,9 +1028,9 @@ static void PrintMatchCallLocation(struct Pokenav_MatchCallGfx *gfx, int delta)
     else
         StringCopy(mapName, gText_Unknown);
 
-    x = GetStringCenterAlignXOffset(FONT_NARROW, mapName, 88);
+    x = GetStringCenterAlignXOffset(FONT_NORMAL, mapName, 88);
     FillWindowPixelBuffer(gfx->locWindowId, PIXEL_FILL(1));
-    AddTextPrinterParameterized(gfx->locWindowId, FONT_NARROW, mapName, x, 1, 0, NULL);
+    AddTextPrinterParameterized(gfx->locWindowId, FONT_NORMAL, mapName, x, 1, 0, NULL);
 }
 
 static void PrintMatchCallSelectionOptions(struct Pokenav_MatchCallGfx *gfx)
@@ -1044,7 +1044,7 @@ static void PrintMatchCallSelectionOptions(struct Pokenav_MatchCallGfx *gfx)
         if (optionText == MATCH_CALL_OPTION_COUNT)
             break;
 
-        AddTextPrinterParameterized(gfx->infoBoxWindowId, FONT_NARROW, sMatchCallOptionTexts[optionText], 16, i * 16 + 1, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(gfx->infoBoxWindowId, FONT_NORMAL, sMatchCallOptionTexts[optionText], 16, i * 16 + 1, TEXT_SKIP_DRAW, NULL);
     }
 
     CopyWindowToVram(gfx->infoBoxWindowId, COPYWIN_GFX);

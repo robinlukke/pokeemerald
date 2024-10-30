@@ -1276,14 +1276,16 @@ u8 GetPlayerAvatarGenderByGraphicsId(u8 gfxId)
 bool8 PartyHasMonWithSurf(void)
 {
     u8 i;
+	u8 tmId;
+	tmId = ReturnTMHMId(MOVE_SURF);
 
     if (!TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
     {
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE)
-                break;
-            if (MonKnowsMove(&gPlayerParty[i], MOVE_SURF))
+            u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL);
+            if (species == SPECIES_NONE)
+            if (CanSpeciesLearnTMHM(species, tmId))
                 return TRUE;
         }
     }

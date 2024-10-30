@@ -2209,6 +2209,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     u32 personality;
     u32 value;
     u16 checksum;
+	u8 gGameVersion;
 
     ZeroBoxMonData(boxMon);
 
@@ -2217,7 +2218,6 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     else
         personality = Random32();
 
-    SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
 
     // Determine original trainer ID
     if (otIdType == OT_ID_RANDOM_NO_SHINY)
@@ -2242,6 +2242,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
               | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
     }
 
+    SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
     SetBoxMonData(boxMon, MON_DATA_OT_ID, &value);
 
     checksum = CalculateBoxMonChecksum(boxMon);
@@ -2257,7 +2258,21 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     value = GetCurrentRegionMapSectionId();
     SetBoxMonData(boxMon, MON_DATA_MET_LOCATION, &value);
     SetBoxMonData(boxMon, MON_DATA_MET_LEVEL, &level);
+
+	{
+	gGameVersion = VERSION_EMERALD;
+	if (
+	species == SPECIES_ROSELIA
+	||species == SPECIES_MEDITITE
+	||species == SPECIES_ZANGOOSE
+	||species == SPECIES_MAWILE)
+		gGameVersion = VERSION_RUBY;
+	if (
+	species == SPECIES_LUNATONE)
+		gGameVersion = VERSION_SAPPHIRE;
     SetBoxMonData(boxMon, MON_DATA_MET_GAME, &gGameVersion);
+	}
+
     value = ITEM_POKE_BALL;
     SetBoxMonData(boxMon, MON_DATA_POKEBALL, &value);
     SetBoxMonData(boxMon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
@@ -2633,8 +2648,17 @@ void ConvertPokemonToBattleTowerPokemon(struct Pokemon *mon, struct BattleTowerP
 static void CreateEventMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
 {
     bool32 isModernFatefulEncounter = TRUE;
+	u8 language;
+
+
+	if (species == SPECIES_MEW)
+	{
+		language = LANGUAGE_JAPANESE;
+	}
+
 
     CreateMon(mon, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId);
+	SetMonData(mon, MON_DATA_LANGUAGE, &language);
     SetMonData(mon, MON_DATA_MODERN_FATEFUL_ENCOUNTER, &isModernFatefulEncounter);
 }
 
@@ -2996,6 +3020,9 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon)
 
         moveLevel = (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_LV);
 
+		if (moveLevel == 0)
+            continue;
+
         if (moveLevel > (level << 9))
             break;
 
@@ -3168,10 +3195,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         if (attackerHoldEffect == sHoldEffectToType[i][0]
             && type == sHoldEffectToType[i][1])
         {
-            if (IS_TYPE_PHYSICAL(type))
-                attack = (attack * (attackerHoldEffectParam + 100)) / 100;
-            else
-                spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
+            attack = (attack * (attackerHoldEffectParam + 100)) / 100;
+            spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
             break;
         }
     }
@@ -3187,8 +3212,16 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         spAttack *= 2;
     if (defenderHoldEffect == HOLD_EFFECT_DEEP_SEA_SCALE && defender->species == SPECIES_CLAMPERL)
         spDefense *= 2;
+
+	if (attackerHoldEffect == HOLD_EFFECT_LIGHT_BALL && attacker->species == SPECIES_PIKACHU)
+        attack *= 2;
     if (attackerHoldEffect == HOLD_EFFECT_LIGHT_BALL && attacker->species == SPECIES_PIKACHU)
         spAttack *= 2;
+	if (attackerHoldEffect == HOLD_EFFECT_LIGHT_BALL && defender->species == SPECIES_PIKACHU)
+        defense *= 2;
+	if (attackerHoldEffect == HOLD_EFFECT_LIGHT_BALL && defender->species == SPECIES_PIKACHU)
+        spDefense *= 2;
+
     if (defenderHoldEffect == HOLD_EFFECT_METAL_POWDER && defender->species == SPECIES_DITTO)
         defense *= 2;
     if (attackerHoldEffect == HOLD_EFFECT_THICK_CLUB && (attacker->species == SPECIES_CUBONE || attacker->species == SPECIES_MAROWAK))
@@ -3196,7 +3229,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 
     // Apply abilities / field sports
     if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
-        spAttack /= 2;
+		gBattleMovePower /= 2;
     if (attacker->ability == ABILITY_HUSTLE)
         attack = (150 * attack) / 100;
     if (attacker->ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
@@ -3208,23 +3241,23 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (defender->ability == ABILITY_MARVEL_SCALE && defender->status1)
         defense = (150 * defense) / 100;
     if (type == TYPE_ELECTRIC && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, ABILITYEFFECT_MUD_SPORT, 0))
-        gBattleMovePower /= 2;
+        gBattleMovePower * 0;
     if (type == TYPE_FIRE && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, ABILITYEFFECT_WATER_SPORT, 0))
-        gBattleMovePower /= 2;
-    if (type == TYPE_GRASS && attacker->ability == ABILITY_OVERGROW && attacker->hp <= (attacker->maxHP / 3))
+        gBattleMovePower * 0;
+    if (type == TYPE_GRASS && attacker->ability == ABILITY_OVERGROW && attacker->hp <= (attacker->maxHP / 2))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
-    if (type == TYPE_FIRE && attacker->ability == ABILITY_BLAZE && attacker->hp <= (attacker->maxHP / 3))
+    if (type == TYPE_FIRE && attacker->ability == ABILITY_BLAZE && attacker->hp <= (attacker->maxHP / 2))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
-    if (type == TYPE_WATER && attacker->ability == ABILITY_TORRENT && attacker->hp <= (attacker->maxHP / 3))
+    if (type == TYPE_WATER && attacker->ability == ABILITY_TORRENT && attacker->hp <= (attacker->maxHP / 2))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
-    if (type == TYPE_BUG && attacker->ability == ABILITY_SWARM && attacker->hp <= (attacker->maxHP / 3))
+    if (type == TYPE_BUG && attacker->ability == ABILITY_SWARM && attacker->hp <= (attacker->maxHP / 2))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
 
     // Self-destruct / Explosion cut defense in half
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
         defense /= 2;
 
-    if (IS_TYPE_PHYSICAL(type))
+    if (IS_MOVE_PHYSICAL(gCurrentMove))
     {
         if (gCritMultiplier == 2)
         {
@@ -3279,7 +3312,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (type == TYPE_MYSTERY)
         damage = 0; // is ??? type. does 0 damage.
 
-    if (IS_TYPE_SPECIAL(type))
+    if (IS_MOVE_SPECIAL(gCurrentMove))
     {
         if (gCritMultiplier == 2)
         {
@@ -3321,47 +3354,47 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         // Moves hitting both targets do half damage in double battles
         if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
             damage /= 2;
+    }
 
-        // Are effects of weather negated with cloud nine or air lock
-        if (WEATHER_HAS_EFFECT2)
+    // Are effects of weather negated with cloud nine or air lock
+    if (WEATHER_HAS_EFFECT2)
+    {
+        // Rain weakens Fire, boosts Water
+        if (gBattleWeather & B_WEATHER_RAIN_TEMPORARY)
         {
-            // Rain weakens Fire, boosts Water
-            if (gBattleWeather & B_WEATHER_RAIN_TEMPORARY)
+            switch (type)
             {
-                switch (type)
-                {
-                case TYPE_FIRE:
-                    damage /= 2;
-                    break;
-                case TYPE_WATER:
-                    damage = (15 * damage) / 10;
-                    break;
-                }
-            }
-
-            // Any weather except sun weakens solar beam
-            if ((gBattleWeather & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
+            case TYPE_FIRE:
                 damage /= 2;
-
-            // Sun boosts Fire, weakens Water
-            if (gBattleWeather & B_WEATHER_SUN)
-            {
-                switch (type)
-                {
-                case TYPE_FIRE:
-                    damage = (15 * damage) / 10;
-                    break;
-                case TYPE_WATER:
-                    damage /= 2;
-                    break;
-                }
+                break;
+            case TYPE_WATER:
+                damage = (15 * damage) / 10;
+                break;
             }
         }
 
-        // Flash fire triggered
-        if ((gBattleResources->flags->flags[battlerIdAtk] & RESOURCE_FLAG_FLASH_FIRE) && type == TYPE_FIRE)
-            damage = (15 * damage) / 10;
+        // Any weather except sun weakens solar beam
+        if ((gBattleWeather & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
+            damage /= 2;
+
+        // Sun boosts Fire, weakens Water
+        if (gBattleWeather & B_WEATHER_SUN)
+        {
+            switch (type)
+            {
+            case TYPE_FIRE:
+                damage = (15 * damage) / 10;
+                break;
+            case TYPE_WATER:
+                damage /= 2;
+                break;
+            }
+        }
     }
+
+    // Flash fire triggered
+    if ((gBattleResources->flags->flags[battlerIdAtk] & RESOURCE_FLAG_FLASH_FIRE) && type == TYPE_FIRE)
+        damage = (15 * damage) / 10;
 
     return damage + 2;
 }
@@ -4390,13 +4423,29 @@ void CopyMon(void *dest, void *src, size_t size)
     memcpy(dest, src, size);
 }
 
+const u8 MewNickname[] = _("ミュウ");
+const u8 EmeraldTrainerId[] = _("エメラルド");
+
 u8 GiveMonToPlayer(struct Pokemon *mon)
 {
     s32 i;
+	u8 ribbonData;
 
+	if (GetMonData(mon, MON_DATA_SPECIES, NULL) == SPECIES_MEW)
+	SetMonData(mon, MON_DATA_NICKNAME, MewNickname);
+
+	{
+	if (GetMonData(mon, MON_DATA_SPECIES, NULL) == SPECIES_MEW)
+	SetMonData(mon, MON_DATA_OT_NAME, EmeraldTrainerId);
+	else
     SetMonData(mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
-    SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
+	}
+
     SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
+    SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
+
+	if (GetMonData(mon, MON_DATA_SPECIES, NULL) == SPECIES_SUICUNE)
+	SetMonData(mon, MON_DATA_NATIONAL_RIBBON, &ribbonData);
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -5042,6 +5091,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                             if (dataUnsigned == 0)
                                 dataUnsigned = 1;
                             break;
+                        case ITEM6_HEAL_HP_QUARTER:
+                            dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL) / 4;
+                            if (dataUnsigned == 0)
+                                dataUnsigned = 1;
+                            break;
                         case ITEM6_HEAL_HP_LVL_UP:
                             dataUnsigned = gBattleScripting.levelUpHP;
                             break;
@@ -5454,6 +5508,41 @@ u8 *UseStatIncreaseItem(u16 itemId)
         gBattlerAttacker = gBattlerInMenuId;
         BattleStringExpandPlaceholdersToDisplayedString(gText_PkmnShroudedInMist);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return gDisplayedStringBattle;
 }
@@ -5914,7 +6003,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
         if (event == FRIENDSHIP_EVENT_WALKING)
         {
             // 50% chance every 128 steps
-            if (Random() & 1)
+            //if (Random() & 1)
                 return;
         }
         if (event == FRIENDSHIP_EVENT_LEAGUE_BATTLE)
@@ -5951,7 +6040,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
     }
 }
 
-void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
+/* void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
 {
     u8 evs[NUM_STATS];
     u16 evIncrease = 0;
@@ -6028,7 +6117,7 @@ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
         totalEVs += evIncrease;
         SetMonData(mon, MON_DATA_HP_EV + i, &evs[i]);
     }
-}
+} */
 
 u16 GetMonEVCount(struct Pokemon *mon)
 {
@@ -6159,8 +6248,8 @@ void UpdatePartyPokerusTime(u16 days)
 
 void PartySpreadPokerus(struct Pokemon *party)
 {
-    if ((Random() % 3) == 0)
-    {
+//    if ((Random() % 3) == 0)
+//    {
         int i;
         for (i = 0; i < PARTY_SIZE; i++)
         {
@@ -6184,7 +6273,7 @@ void PartySpreadPokerus(struct Pokemon *party)
                 }
             }
         }
-    }
+//    }
 }
 
 bool8 TryIncrementMonLevel(struct Pokemon *mon)
@@ -6391,6 +6480,8 @@ void ClearBattleMonForms(void)
 
 u16 GetBattleBGM(void)
 {
+	u16 species;
+
     if (gBattleTypeFlags & BATTLE_TYPE_KYOGRE_GROUDON)
         return MUS_VS_KYOGRE_GROUDON;
     else if (gBattleTypeFlags & BATTLE_TYPE_REGI)
@@ -6426,7 +6517,7 @@ u16 GetBattleBGM(void)
             if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
                 return MUS_VS_RIVAL;
             if (!StringCompare(gTrainers[gTrainerBattleOpponent_A].trainerName, gText_BattleWallyName))
-                return MUS_VS_TRAINER;
+                return MUS_VS_RIVAL;
             return MUS_VS_RIVAL;
         case TRAINER_CLASS_ELITE_FOUR:
             return MUS_VS_ELITE_FOUR;
@@ -6442,8 +6533,260 @@ u16 GetBattleBGM(void)
             return MUS_VS_TRAINER;
         }
     }
-    else
-        return MUS_VS_WILD;
+	else
+	{
+	species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL);
+	switch (species)
+		{
+		case SPECIES_BULBASAUR:
+		case SPECIES_IVYSAUR:
+		case SPECIES_VENUSAUR:
+		case SPECIES_CHARMANDER:
+		case SPECIES_CHARMELEON:
+		case SPECIES_CHARIZARD:
+		case SPECIES_SQUIRTLE:
+		case SPECIES_WARTORTLE:
+		case SPECIES_BLASTOISE:
+		case SPECIES_CATERPIE:
+		case SPECIES_METAPOD:
+		case SPECIES_BUTTERFREE:
+		case SPECIES_WEEDLE:
+		case SPECIES_KAKUNA:
+		case SPECIES_BEEDRILL:
+		case SPECIES_PIDGEY:
+		case SPECIES_PIDGEOTTO:
+		case SPECIES_PIDGEOT:
+		case SPECIES_RATTATA:
+		case SPECIES_RATICATE:
+		case SPECIES_SPEAROW:
+		case SPECIES_FEAROW:
+		case SPECIES_EKANS:
+		case SPECIES_ARBOK:
+		case SPECIES_PIKACHU:
+		case SPECIES_RAICHU:
+		case SPECIES_SANDSHREW:
+		case SPECIES_SANDSLASH:
+		case SPECIES_NIDORAN_F:
+		case SPECIES_NIDORINA:
+		case SPECIES_NIDOQUEEN:
+		case SPECIES_NIDORAN_M:
+		case SPECIES_NIDORINO:
+		case SPECIES_NIDOKING:
+		case SPECIES_CLEFAIRY:
+		case SPECIES_CLEFABLE:
+		case SPECIES_VULPIX:
+		case SPECIES_NINETALES:
+		case SPECIES_JIGGLYPUFF:
+		case SPECIES_WIGGLYTUFF:
+		case SPECIES_ZUBAT:
+		case SPECIES_GOLBAT:
+		case SPECIES_ODDISH:
+		case SPECIES_GLOOM:
+		case SPECIES_VILEPLUME:
+		case SPECIES_PARAS:
+		case SPECIES_PARASECT:
+		case SPECIES_VENONAT:
+		case SPECIES_VENOMOTH:
+		case SPECIES_DIGLETT:
+		case SPECIES_DUGTRIO:
+		case SPECIES_MEOWTH:
+		case SPECIES_PERSIAN:
+		case SPECIES_PSYDUCK:
+		case SPECIES_GOLDUCK:
+		case SPECIES_MANKEY:
+		case SPECIES_PRIMEAPE:
+		case SPECIES_GROWLITHE:
+		case SPECIES_ARCANINE:
+		case SPECIES_POLIWAG:
+		case SPECIES_POLIWHIRL:
+		case SPECIES_POLIWRATH:
+		case SPECIES_ABRA:
+		case SPECIES_KADABRA:
+		case SPECIES_ALAKAZAM:
+		case SPECIES_MACHOP:
+		case SPECIES_MACHOKE:
+		case SPECIES_MACHAMP:
+		case SPECIES_BELLSPROUT:
+		case SPECIES_WEEPINBELL:
+		case SPECIES_VICTREEBEL:
+		case SPECIES_TENTACOOL:
+		case SPECIES_TENTACRUEL:
+		case SPECIES_GEODUDE:
+		case SPECIES_GRAVELER:
+		case SPECIES_GOLEM:
+		case SPECIES_PONYTA:
+		case SPECIES_RAPIDASH:
+		case SPECIES_SLOWPOKE:
+		case SPECIES_SLOWBRO:
+		case SPECIES_MAGNEMITE:
+		case SPECIES_MAGNETON:
+		case SPECIES_FARFETCHD:
+		case SPECIES_DODUO:
+		case SPECIES_DODRIO:
+		case SPECIES_SEEL:
+		case SPECIES_DEWGONG:
+		case SPECIES_GRIMER:
+		case SPECIES_MUK:
+		case SPECIES_SHELLDER:
+		case SPECIES_CLOYSTER:
+		case SPECIES_GASTLY:
+		case SPECIES_HAUNTER:
+		case SPECIES_GENGAR:
+		case SPECIES_ONIX:
+		case SPECIES_DROWZEE:
+		case SPECIES_HYPNO:
+		case SPECIES_KRABBY:
+		case SPECIES_KINGLER:
+		case SPECIES_VOLTORB:
+		case SPECIES_ELECTRODE:
+		case SPECIES_EXEGGCUTE:
+		case SPECIES_EXEGGUTOR:
+		case SPECIES_CUBONE:
+		case SPECIES_MAROWAK:
+		case SPECIES_HITMONLEE:
+		case SPECIES_HITMONCHAN:
+		case SPECIES_LICKITUNG:
+		case SPECIES_KOFFING:
+		case SPECIES_WEEZING:
+		case SPECIES_RHYHORN:
+		case SPECIES_RHYDON:
+		case SPECIES_CHANSEY:
+		case SPECIES_TANGELA:
+		case SPECIES_KANGASKHAN:
+		case SPECIES_HORSEA:
+		case SPECIES_SEADRA:
+		case SPECIES_GOLDEEN:
+		case SPECIES_SEAKING:
+		case SPECIES_STARYU:
+		case SPECIES_STARMIE:
+		case SPECIES_MR_MIME:
+		case SPECIES_SCYTHER:
+		case SPECIES_JYNX:
+		case SPECIES_ELECTABUZZ:
+		case SPECIES_MAGMAR:
+		case SPECIES_PINSIR:
+		case SPECIES_TAUROS:
+		case SPECIES_MAGIKARP:
+		case SPECIES_GYARADOS:
+		case SPECIES_LAPRAS:
+		case SPECIES_DITTO:
+		case SPECIES_EEVEE:
+		case SPECIES_VAPOREON:
+		case SPECIES_JOLTEON:
+		case SPECIES_FLAREON:
+		case SPECIES_PORYGON:
+		case SPECIES_OMANYTE:
+		case SPECIES_OMASTAR:
+		case SPECIES_KABUTO:
+		case SPECIES_KABUTOPS:
+		case SPECIES_AERODACTYL:
+		case SPECIES_SNORLAX:
+		case SPECIES_ARTICUNO:
+		case SPECIES_ZAPDOS:
+		case SPECIES_MOLTRES:
+		case SPECIES_DRATINI:
+		case SPECIES_DRAGONAIR:
+		case SPECIES_DRAGONITE:
+			return MUS_RG_VS_WILD;
+		case SPECIES_CHIKORITA:
+		case SPECIES_BAYLEEF:
+		case SPECIES_MEGANIUM:
+		case SPECIES_CYNDAQUIL:
+		case SPECIES_QUILAVA:
+		case SPECIES_TYPHLOSION:
+		case SPECIES_TOTODILE:
+		case SPECIES_CROCONAW:
+		case SPECIES_FERALIGATR:
+		case SPECIES_SENTRET:
+		case SPECIES_FURRET:
+		case SPECIES_HOOTHOOT:
+		case SPECIES_NOCTOWL:
+		case SPECIES_LEDYBA:
+		case SPECIES_LEDIAN:
+		case SPECIES_SPINARAK:
+		case SPECIES_ARIADOS:
+		case SPECIES_CROBAT:
+		case SPECIES_CHINCHOU:
+		case SPECIES_LANTURN:
+		case SPECIES_PICHU:
+		case SPECIES_CLEFFA:
+		case SPECIES_IGGLYBUFF:
+		case SPECIES_TOGEPI:
+		case SPECIES_TOGETIC:
+		case SPECIES_NATU:
+		case SPECIES_XATU:
+		case SPECIES_MAREEP:
+		case SPECIES_FLAAFFY:
+		case SPECIES_AMPHAROS:
+		case SPECIES_BELLOSSOM:
+		case SPECIES_MARILL:
+		case SPECIES_AZUMARILL:
+		case SPECIES_SUDOWOODO:
+		case SPECIES_POLITOED:
+		case SPECIES_HOPPIP:
+		case SPECIES_SKIPLOOM:
+		case SPECIES_JUMPLUFF:
+		case SPECIES_AIPOM:
+		case SPECIES_SUNKERN:
+		case SPECIES_SUNFLORA:
+		case SPECIES_YANMA:
+		case SPECIES_WOOPER:
+		case SPECIES_QUAGSIRE:
+		case SPECIES_ESPEON:
+		case SPECIES_UMBREON:
+		case SPECIES_MURKROW:
+		case SPECIES_SLOWKING:
+		case SPECIES_MISDREAVUS:
+		case SPECIES_UNOWN:
+		case SPECIES_WOBBUFFET:
+		case SPECIES_GIRAFARIG:
+		case SPECIES_PINECO:
+		case SPECIES_FORRETRESS:
+		case SPECIES_DUNSPARCE:
+		case SPECIES_GLIGAR:
+		case SPECIES_STEELIX:
+		case SPECIES_SNUBBULL:
+		case SPECIES_GRANBULL:
+		case SPECIES_QWILFISH:
+		case SPECIES_SCIZOR:
+		case SPECIES_SHUCKLE:
+		case SPECIES_HERACROSS:
+		case SPECIES_SNEASEL:
+		case SPECIES_TEDDIURSA:
+		case SPECIES_URSARING:
+		case SPECIES_SLUGMA:
+		case SPECIES_MAGCARGO:
+		case SPECIES_SWINUB:
+		case SPECIES_PILOSWINE:
+		case SPECIES_CORSOLA:
+		case SPECIES_REMORAID:
+		case SPECIES_OCTILLERY:
+		case SPECIES_DELIBIRD:
+		case SPECIES_MANTINE:
+		case SPECIES_SKARMORY:
+		case SPECIES_HOUNDOUR:
+		case SPECIES_HOUNDOOM:
+		case SPECIES_KINGDRA:
+		case SPECIES_PHANPY:
+		case SPECIES_DONPHAN:
+		case SPECIES_PORYGON2:
+		case SPECIES_STANTLER:
+		case SPECIES_SMEARGLE:
+		case SPECIES_TYROGUE:
+		case SPECIES_HITMONTOP:
+		case SPECIES_SMOOCHUM:
+		case SPECIES_ELEKID:
+		case SPECIES_MAGBY:
+		case SPECIES_MILTANK:
+		case SPECIES_BLISSEY:
+		case SPECIES_LARVITAR:
+		case SPECIES_PUPITAR:
+		case SPECIES_TYRANITAR:
+			return MUS_RG_VS_WILD;
+		default:
+			return MUS_VS_WILD;
+		}
+	}
 }
 
 void PlayBattleBGM(void)
@@ -6760,10 +7103,11 @@ static void Task_PokemonSummaryAnimateAfterDelay(u8 taskId)
 
 void BattleAnimateFrontSprite(struct Sprite *sprite, u16 species, bool8 noCry, u8 panMode)
 {
-    if (gHitMarker & HITMARKER_NO_ANIMATIONS && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)))
-        DoMonFrontSpriteAnimation(sprite, species, noCry, panMode | SKIP_FRONT_ANIM);
-    else
-        DoMonFrontSpriteAnimation(sprite, species, noCry, panMode);
+//    if (gHitMarker & HITMARKER_NO_ANIMATIONS && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)))
+//        DoMonFrontSpriteAnimation(sprite, species, noCry, panMode | SKIP_FRONT_ANIM);
+//    else
+//        DoMonFrontSpriteAnimation(sprite, species, noCry, panMode);
+	DoMonFrontSpriteAnimation(sprite, species, noCry, panMode | 0x80);
 }
 
 void DoMonFrontSpriteAnimation(struct Sprite *sprite, u16 species, bool8 noCry, u8 panModeAnimFlag)
@@ -6815,23 +7159,24 @@ void DoMonFrontSpriteAnimation(struct Sprite *sprite, u16 species, bool8 noCry, 
 
 void PokemonSummaryDoMonAnimation(struct Sprite *sprite, u16 species, bool8 oneFrame)
 {
-    if (!oneFrame && HasTwoFramesAnimation(species))
-        StartSpriteAnim(sprite, 1);
-    if (sMonAnimationDelayTable[species - 1] != 0)
-    {
-        // Animation has delay, start delay task
-        u8 taskId = CreateTask(Task_PokemonSummaryAnimateAfterDelay, 0);
-        STORE_PTR_IN_TASK(sprite, taskId, 0);
-        gTasks[taskId].sAnimId = sMonFrontAnimIdsTable[species - 1];
-        gTasks[taskId].sAnimDelay = sMonAnimationDelayTable[species - 1];
-        SummaryScreen_SetAnimDelayTaskId(taskId);
-        SetSpriteCB_MonAnimDummy(sprite);
-    }
-    else
-    {
-        // No delay, start animation
-        StartMonSummaryAnimation(sprite, sMonFrontAnimIdsTable[species - 1]);
-    }
+//    if (!oneFrame && HasTwoFramesAnimation(species))
+//        StartSpriteAnim(sprite, 1);
+//    if (sMonAnimationDelayTable[species - 1] != 0)
+//    {
+//        // Animation has delay, start delay task
+//        u8 taskId = CreateTask(Task_PokemonSummaryAnimateAfterDelay, 0);
+//        STORE_PTR_IN_TASK(sprite, taskId, 0);
+//        gTasks[taskId].sAnimId = sMonFrontAnimIdsTable[species - 1];
+//        gTasks[taskId].sAnimDelay = sMonAnimationDelayTable[species - 1];
+//        SummaryScreen_SetAnimDelayTaskId(taskId);
+//        SetSpriteCB_MonAnimDummy(sprite);
+//    }
+//    else
+//    {
+//        // No delay, start animation
+//        StartMonSummaryAnimation(sprite, sMonFrontAnimIdsTable[species - 1]);
+//    }
+	sprite->callback = SpriteCallbackDummy;
 }
 
 void StopPokemonAnimationDelayTask(void)
@@ -6843,15 +7188,16 @@ void StopPokemonAnimationDelayTask(void)
 
 void BattleAnimateBackSprite(struct Sprite *sprite, u16 species)
 {
-    if (gHitMarker & HITMARKER_NO_ANIMATIONS && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)))
-    {
-        sprite->callback = SpriteCallbackDummy;
-    }
-    else
-    {
-        LaunchAnimationTaskForBackSprite(sprite, GetSpeciesBackAnimSet(species));
-        sprite->callback = SpriteCallbackDummy_2;
-    }
+//    if (gHitMarker & HITMARKER_NO_ANIMATIONS && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)))
+//    {
+//        sprite->callback = SpriteCallbackDummy;
+//    }
+//    else
+//    {
+//        LaunchAnimationTaskForBackSprite(sprite, GetSpeciesBackAnimSet(species));
+//        sprite->callback = SpriteCallbackDummy_2;
+//    }
+	sprite->callback = SpriteCallbackDummy;
 }
 
 // Identical to GetOpposingLinkMultiBattlerId but for the player
@@ -7141,3 +7487,72 @@ u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum)
         return gfx->spritePointers[spriteNum];
     }
 }
+
+u16 MonTryLearningNewMoveEvolution(struct Pokemon *mon, bool8 firstMove)
+{
+    u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
+    u8 level = GetMonData(mon, MON_DATA_LEVEL, NULL);
+u8 speciesName[POKEMON_NAME_LENGTH + 1];
+
+	// EXCEPTIONS: Pokemon that can't legally learn moves
+	//when they evolve before certain levels
+	if (
+	(species == SPECIES_NIDOKING)
+	&& (level < 22))
+			return 0;
+	if (
+	(species == SPECIES_CLEFABLE)
+	&& (level < 29))
+			return 0;
+	if (
+	(species == SPECIES_ARCANINE)
+	&& (level < 49))
+			return 0;
+	if (
+	(species == SPECIES_POLIWRATH)
+	&& (level < 35))
+			return 0;
+	if (
+	(species == SPECIES_CLOYSTER)
+	&& (level < 8))
+			return 0;
+	if (
+	(species == SPECIES_EXEGGUTOR)
+	&& (level < 19))
+			return 0;
+	if (
+	(species == SPECIES_VAPOREON
+	|| species == SPECIES_JOLTEON
+	|| species == SPECIES_FLAREON
+	|| species == SPECIES_ESPEON
+	|| species == SPECIES_UMBREON)
+	&& (level < 16))
+			return 0;
+	if (
+	(species == SPECIES_SHARPEDO)
+	&& (level < 33))
+			return 0;
+
+    // since you can learn more than one move per level
+    // the game needs to know whether you decided to
+    // learn it or keep the old set to avoid asking
+    // you to learn the same move over and over again
+    if (firstMove)
+    {
+        sLearningMoveTableID = 0;
+    }
+    while(gLevelUpLearnsets[species][sLearningMoveTableID] != LEVEL_UP_END)
+    {
+        u16 moveLevel;
+        moveLevel = (gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV);
+        while (moveLevel == 0 || moveLevel == (level << 9))
+        {
+            gMoveToLearn = (gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_ID);
+            sLearningMoveTableID++;
+            return GiveMoveToMon(mon, gMoveToLearn);
+        }
+        sLearningMoveTableID++;
+    }
+    return 0;
+}
+

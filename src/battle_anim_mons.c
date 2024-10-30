@@ -54,18 +54,18 @@ static const struct UCoords8 sBattlerCoords[][MAX_BATTLERS_COUNT] =
 // One entry for each of the four Castform forms.
 const struct MonCoords gCastformFrontSpriteCoords[NUM_CASTFORM_FORMS] =
 {
-    [CASTFORM_NORMAL] = { .size = MON_COORDS_SIZE(32, 32), .y_offset = 17 },
-    [CASTFORM_FIRE]   = { .size = MON_COORDS_SIZE(48, 48), .y_offset =  9 },
-    [CASTFORM_WATER]  = { .size = MON_COORDS_SIZE(32, 48), .y_offset =  9 },
-    [CASTFORM_ICE]    = { .size = MON_COORDS_SIZE(64, 48), .y_offset =  8 },
+    [CASTFORM_NORMAL] = { .size = MON_COORDS_SIZE(32, 32), .y_offset = 15 },
+    [CASTFORM_FIRE]   = { .size = MON_COORDS_SIZE(48, 48), .y_offset = 15},
+    [CASTFORM_WATER]  = { .size = MON_COORDS_SIZE(32, 48), .y_offset = 15 },
+    [CASTFORM_ICE]    = { .size = MON_COORDS_SIZE(64, 48), .y_offset = 15 },
 };
 
 static const u8 sCastformElevations[NUM_CASTFORM_FORMS] =
 {
-    [CASTFORM_NORMAL] = 13,
-    [CASTFORM_FIRE]   = 14,
-    [CASTFORM_WATER]  = 13,
-    [CASTFORM_ICE]    = 13,
+    [CASTFORM_NORMAL] = 15,
+    [CASTFORM_FIRE]   = 15,
+    [CASTFORM_WATER]  = 15,
+    [CASTFORM_ICE]    = 15,
 };
 
 // Y position of the backsprite for each of the four Castform forms.

@@ -447,13 +447,19 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
 
 static const u8 *GetInteractedWaterScript(struct MapPosition *unused1, u8 metatileBehavior, u8 direction)
 {
-    if (FlagGet(FLAG_BADGE05_GET) == TRUE && PartyHasMonWithSurf() == TRUE && IsPlayerFacingSurfableFishableWater() == TRUE)
+	if (CheckBagHasItem(ITEM_HM03, 1))
+		{
+		if (IsPlayerFacingSurfableFishableWater() == TRUE)
         return EventScript_UseSurf;
+		}
 
-    if (MetatileBehavior_IsWaterfall(metatileBehavior) == TRUE)
+if (MetatileBehavior_IsWaterfall(metatileBehavior) == TRUE)
     {
-        if (FlagGet(FLAG_BADGE08_GET) == TRUE && IsPlayerSurfingNorth() == TRUE)
+	if (CheckBagHasItem(ITEM_HM07, 1))
+		{
+		if (IsPlayerSurfingNorth() == TRUE)
             return EventScript_UseWaterfall;
+		}
         else
             return EventScript_CannotUseWaterfall;
     }
@@ -546,11 +552,11 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
 
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_FORCED_MOVE) && !MetatileBehavior_IsForcedMovementTile(metatileBehavior))
     {
-        if (UpdatePoisonStepCounter() == TRUE)
+        /* if (UpdatePoisonStepCounter() == TRUE)
         {
             ScriptContext_SetupScript(EventScript_FieldPoison);
             return TRUE;
-        }
+        } */
         if (ShouldEggHatch())
         {
             IncrementGameStat(GAME_STAT_HATCHED_EGGS);

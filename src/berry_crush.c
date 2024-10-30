@@ -1586,8 +1586,8 @@ static void FramesToMinSec(struct BerryCrushGame_Gfx *gfx, u16 frames)
 
 static void PrintTextCentered(u8 windowId, u8 left, u8 colorId, const u8 *string)
 {
-    left = (left * 4) - (GetStringWidth(FONT_SHORT, string, -1) / 2u);
-    AddTextPrinterParameterized3(windowId, FONT_SHORT, left, 0, sTextColorTable[colorId], 0, string);
+    left = (left * 4) - (GetStringWidth(FONT_NORMAL, string, -1) / 2u);
+    AddTextPrinterParameterized3(windowId, FONT_NORMAL, left, 0, sTextColorTable[colorId], 0, string);
 }
 
 static void PrintResultsText(struct BerryCrushGame * game, u8 page, u8 sp14, u8 baseY)
@@ -1647,8 +1647,8 @@ static void PrintResultsText(struct BerryCrushGame * game, u8 page, u8 sp14, u8 
             StringExpandPlaceholders(gStringVar4, sResultsTexts[page]);
             break;
         }
-        x = GetStringRightAlignXOffset(FONT_SHORT, gStringVar4, sp14 - 4);
-        AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
+        x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, sp14 - 4);
+        AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
         if (playerId == game->localId)
             StringCopy(gStringVar3, gText_1DotBlueF700);
         else
@@ -1656,7 +1656,7 @@ static void PrintResultsText(struct BerryCrushGame * game, u8 page, u8 sp14, u8 
         gStringVar3[0] = ranking + CHAR_1;
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, game->players[playerId].name);
         DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, gStringVar3);
-        AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, 4, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
+        AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, 4, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
     }
 }
 
@@ -1671,34 +1671,34 @@ static void PrintCrushingResults(struct BerryCrushGame *game)
     FramesToMinSec(&game->gfx, results->time);
 
     // Print time text
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gText_TimeColon);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gText_TimeColon);
 
     // Print seconds text
-    x = 176 - (u8)GetStringWidth(FONT_SHORT, gText_SpaceSec, -1);
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gText_SpaceSec);
+    x = 176 - (u8)GetStringWidth(FONT_NORMAL, gText_SpaceSec, -1);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gText_SpaceSec);
 
     // Print seconds value
     ConvertIntToDecimalStringN(gStringVar1, game->gfx.secondsInt, STR_CONV_MODE_LEADING_ZEROS, 2);
     ConvertIntToDecimalStringN(gStringVar2, game->gfx.secondsFrac, STR_CONV_MODE_LEADING_ZEROS, 2);
     StringExpandPlaceholders(gStringVar4, gText_XDotY2);
-    x -= GetStringWidth(FONT_SHORT, gStringVar4, -1);
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
+    x -= GetStringWidth(FONT_NORMAL, gStringVar4, -1);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
 
     // Print minutes text
-    x -= GetStringWidth(FONT_SHORT, gText_SpaceMin, -1);
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gText_SpaceMin);
+    x -= GetStringWidth(FONT_NORMAL, gText_SpaceMin, -1);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gText_SpaceMin);
 
     // Print minutes value
     ConvertIntToDecimalStringN(gStringVar1, game->gfx.minutes, STR_CONV_MODE_LEADING_ZEROS, 1);
     StringExpandPlaceholders(gStringVar4, gText_StrVar1);
-    x -= GetStringWidth(FONT_SHORT, gStringVar4, -1);
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
+    x -= GetStringWidth(FONT_NORMAL, gStringVar4, -1);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
 
     // Print pressing speed text
     y += 14;
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, 0, y, sTextColorTable[COLORID_GRAY], 0, gText_PressingSpeed);
-    x = 176 - (u8)GetStringWidth(FONT_SHORT, gText_TimesPerSec, -1);
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gText_TimesPerSec);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, 0, y, sTextColorTable[COLORID_GRAY], 0, gText_PressingSpeed);
+    x = 176 - (u8)GetStringWidth(FONT_NORMAL, gText_TimesPerSec, -1);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gText_TimesPerSec);
 
     // Print pressing speed value
     for (i = 0; i < 8; i++)
@@ -1707,21 +1707,21 @@ static void PrintCrushingResults(struct BerryCrushGame *game)
     ConvertIntToDecimalStringN(gStringVar1, game->pressingSpeed >> 8, STR_CONV_MODE_RIGHT_ALIGN, 3);
     ConvertIntToDecimalStringN(gStringVar2, pressingSpeedFrac / 1000000, STR_CONV_MODE_LEADING_ZEROS, 2);
     StringExpandPlaceholders(gStringVar4, gText_XDotY3);
-    x -= GetStringWidth(FONT_SHORT, gStringVar4, -1);
+    x -= GetStringWidth(FONT_NORMAL, gStringVar4, -1);
     if (game->newRecord)
-        AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_RED], 0, gStringVar4);
+        AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_RED], 0, gStringVar4);
     else
-        AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
+        AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
 
     // Print silkiness text
     y += 14;
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, 0, y, sTextColorTable[COLORID_GRAY], 0, gText_Silkiness);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, 0, y, sTextColorTable[COLORID_GRAY], 0, gText_Silkiness);
 
     // Print silkiness value
     ConvertIntToDecimalStringN(gStringVar1, results->silkiness, STR_CONV_MODE_RIGHT_ALIGN, 3);
     StringExpandPlaceholders(gStringVar4, gText_Var1Percent);
-    x = 176 - (u8)GetStringWidth(FONT_SHORT, gStringVar4, -1);
-    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_SHORT, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
+    x = 176 - (u8)GetStringWidth(FONT_NORMAL, gStringVar4, -1);
+    AddTextPrinterParameterized3(game->gfx.resultsWindowId, FONT_NORMAL, x, y, sTextColorTable[COLORID_GRAY], 0, gStringVar4);
 }
 
 static bool32 OpenResultsWindow(struct BerryCrushGame *game, struct BerryCrushGame_Gfx *gfx)
@@ -1908,8 +1908,8 @@ static void DrawPlayerNameWindows(struct BerryCrushGame *game)
             // Print the player's name
             AddTextPrinterParameterized4(
                 game->gfx.nameWindowIds[i],
-                FONT_SHORT,
-                36 - GetStringWidth(FONT_SHORT, game->players[i].name, 0) / 2u,
+                FONT_NORMAL,
+                36 - GetStringWidth(FONT_NORMAL, game->players[i].name, 0) / 2u,
                 1,
                 0,
                 0,
@@ -1923,8 +1923,8 @@ static void DrawPlayerNameWindows(struct BerryCrushGame *game)
             // Print a partner's name
             AddTextPrinterParameterized4(
                 game->gfx.nameWindowIds[i],
-                FONT_SHORT,
-                36 - GetStringWidth(FONT_SHORT, game->players[i].name, 0) / 2u,
+                FONT_NORMAL,
+                36 - GetStringWidth(FONT_NORMAL, game->players[i].name, 0) / 2u,
                 1,
                 0,
                 0,

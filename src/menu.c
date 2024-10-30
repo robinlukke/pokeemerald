@@ -100,7 +100,7 @@ static const struct WindowTemplate sYesNo_WindowTemplates =
     .bg = 0,
     .tilemapLeft = 21,
     .tilemapTop = 9,
-    .width = 5,
+    .width = 4,
     .height = 4,
     .paletteNum = 15,
     .baseBlock = 0x125
@@ -131,6 +131,7 @@ static const struct MenuInfoIcon sMenuInfoIcons[] =
     [TYPE_ICE + 1]      = { 32, 12, 0x4C },
     [TYPE_DRAGON + 1]   = { 32, 12, 0xA0 },
     [TYPE_DARK + 1]     = { 32, 12, 0x8C },
+	[TYPE_FAIRY + 1]    = { 32, 12, 0x4  },
     [MENU_INFO_ICON_TYPE]      = { 42, 12, 0xA8 },
     [MENU_INFO_ICON_POWER]     = { 42, 12, 0xC0 },
     [MENU_INFO_ICON_ACCURACY]  = { 42, 12, 0xC8 },
@@ -173,9 +174,9 @@ u16 AddTextPrinterParameterized2(u8 windowId, u8 fontId, const u8 *str, u8 speed
     printer.currentChar = str;
     printer.windowId = windowId;
     printer.fontId = fontId;
-    printer.x = 0;
+    printer.x = 4;
     printer.y = 1;
-    printer.currentX = 0;
+    printer.currentX = 4;
     printer.currentY = 1;
     printer.letterSpacing = 0;
     printer.lineSpacing = 0;
@@ -821,9 +822,9 @@ void HofPCTopBar_Print(const u8 *string, u8 left, bool8 copyToVram)
     {
         PutWindowTilemap(sHofPCTopBarWindowId);
         FillWindowPixelBuffer(sHofPCTopBarWindowId, PIXEL_FILL(15));
-        width = GetStringWidth(FONT_SMALL, string, 0);
+        width = GetStringWidth(FONT_NORMAL, string, 0);
         AddTextPrinterParameterized3(sHofPCTopBarWindowId,
-                  FONT_SMALL,
+                  FONT_NORMAL,
                   236 - (GetWindowAttribute(sHofPCTopBarWindowId, WINDOW_TILEMAP_LEFT) * 8) - left - width,
                   1,
                   sTextColors,
@@ -857,9 +858,9 @@ void HofPCTopBar_PrintPair(const u8 *string, const u8 *string2, bool8 noBg, u8 l
         FillWindowPixelBuffer(sHofPCTopBarWindowId, PIXEL_FILL(15));
         if (string2 != NULL)
         {
-            width = GetStringWidth(FONT_SMALL, string2, 0);
+            width = GetStringWidth(FONT_NORMAL, string2, 0);
             AddTextPrinterParameterized3(sHofPCTopBarWindowId,
-                      FONT_SMALL,
+                      FONT_NORMAL,
                       236 - (GetWindowAttribute(sHofPCTopBarWindowId, WINDOW_TILEMAP_LEFT) * 8) - left - width,
                       1,
                       color,
@@ -908,7 +909,7 @@ static u8 InitMenu(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 
     sMenu.minCursorPos = 0;
     sMenu.maxCursorPos = numChoices - 1;
     sMenu.windowId = windowId;
-    sMenu.fontId = fontId;
+    sMenu.fontId = FONT_NORMAL;
     sMenu.optionHeight = cursorHeight;
     sMenu.APressMuted = muteAPress;
 
@@ -939,10 +940,10 @@ void RedrawMenuCursor(u8 oldPos, u8 newPos)
 {
     u8 width, height;
 
-    width = GetMenuCursorDimensionByFont(sMenu.fontId, 0);
-    height = GetMenuCursorDimensionByFont(sMenu.fontId, 1);
+    width = GetMenuCursorDimensionByFont(FONT_NORMAL, 0);
+    height = GetMenuCursorDimensionByFont(FONT_NORMAL, 1);
     FillWindowPixelRect(sMenu.windowId, PIXEL_FILL(1), sMenu.left, sMenu.optionHeight * oldPos + sMenu.top, width, height);
-    AddTextPrinterParameterized(sMenu.windowId, sMenu.fontId, gText_SelectorArrow3, sMenu.left, sMenu.optionHeight * newPos + sMenu.top, 0, 0);
+    AddTextPrinterParameterized(sMenu.windowId, FONT_NORMAL, gText_SelectorArrow3, sMenu.left, sMenu.optionHeight * newPos + sMenu.top, 0, 0);
 }
 
 u8 Menu_MoveCursor(s8 cursorDelta)
@@ -1102,7 +1103,7 @@ void PrintMenuActionTextsAtPos(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineH
 {
     u8 i;
     for (i = 0; i < itemCount; i++)
-        AddTextPrinterParameterized(windowId, fontId, menuActions[i].text, left, (lineHeight * i) + top, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(windowId, FONT_NORMAL, menuActions[i].text, left, (lineHeight * i) + top, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
@@ -1110,7 +1111,7 @@ static void UNUSED PrintMenuActionTextsWithSpacing(u8 windowId, u8 fontId, u8 le
 {
     u8 i;
     for (i = 0; i < itemCount; i++)
-        AddTextPrinterParameterized5(windowId, fontId, menuActions[i].text, left, (lineHeight * i) + top, TEXT_SKIP_DRAW, NULL, letterSpacing, lineSpacing);
+        AddTextPrinterParameterized5(windowId, FONT_NORMAL, menuActions[i].text, left, (lineHeight * i) + top, TEXT_SKIP_DRAW, NULL, letterSpacing, lineSpacing);
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
@@ -1229,14 +1230,14 @@ static void PrintMenuActionGridText(u8 windowId, u8 fontId, u8 left, u8 top, u8 
     for (i = 0; i < rows; i++)
     {
         for (j = 0; j < columns; j++)
-            AddTextPrinterParameterized(windowId, fontId, menuActions[(i * columns) + j].text, (width * j) + left, (height * i) + top, TEXT_SKIP_DRAW, NULL);
+            AddTextPrinterParameterized(windowId, FONT_NORMAL, menuActions[(i * columns) + j].text, (width * j) + left, (height * i) + top, TEXT_SKIP_DRAW, NULL);
     }
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
 static void UNUSED PrintMenuActionGridTextAtTop(u8 windowId, u8 fontId, u8 width, u8 height, u8 columns, u8 rows, const struct MenuAction *menuActions)
 {
-    PrintMenuActionGridText(windowId, fontId, GetFontAttribute(fontId, FONTATTR_MAX_LETTER_WIDTH), 0, width, height, columns, rows, menuActions);
+    PrintMenuActionGridText(windowId, FONT_NORMAL, GetFontAttribute(fontId, FONTATTR_MAX_LETTER_WIDTH), 0, width, height, columns, rows, menuActions);
 }
 
 void PrintMenuActionGrid(u8 windowId, u8 fontId, u8 left, u8 top, u8 optionWidth, u8 horizontalCount, u8 verticalCount, const struct MenuAction *menuActions, const u8 *actionIds)
@@ -1284,7 +1285,7 @@ static u8 InitMenuGrid(u8 windowId, u8 fontId, u8 left, u8 top, u8 optionWidth, 
     sMenu.minCursorPos = 0;
     sMenu.maxCursorPos = numChoices - 1;
     sMenu.windowId = windowId;
-    sMenu.fontId = fontId;
+    sMenu.fontId = FONT_NORMAL;
     sMenu.optionWidth = optionWidth;
     sMenu.optionHeight = optionHeight;
     sMenu.columns = columns;
@@ -1312,8 +1313,8 @@ static u8 UNUSED InitMenuGridDefaultCursorHeight(u8 windowId, u8 fontId, u8 left
 // Erase cursor at old position, draw cursor at new position.
 static void MoveMenuGridCursor(u8 oldCursorPos, u8 newCursorPos)
 {
-    u8 cursorWidth = GetMenuCursorDimensionByFont(sMenu.fontId, 0);
-    u8 cursorHeight = GetMenuCursorDimensionByFont(sMenu.fontId, 1);
+    u8 cursorWidth = GetMenuCursorDimensionByFont(FONT_NORMAL, 0);
+    u8 cursorHeight = GetMenuCursorDimensionByFont(FONT_NORMAL, 1);
 
     u8 xPos = (oldCursorPos % sMenu.columns) * sMenu.optionWidth + sMenu.left;
     u8 yPos = (oldCursorPos / sMenu.columns) * sMenu.optionHeight + sMenu.top;
@@ -1321,7 +1322,7 @@ static void MoveMenuGridCursor(u8 oldCursorPos, u8 newCursorPos)
 
     xPos = (newCursorPos % sMenu.columns) * sMenu.optionWidth + sMenu.left;
     yPos = (newCursorPos / sMenu.columns) * sMenu.optionHeight + sMenu.top;
-    AddTextPrinterParameterized(sMenu.windowId, sMenu.fontId, gText_SelectorArrow3, xPos, yPos, 0, 0);
+    AddTextPrinterParameterized(sMenu.windowId, FONT_NORMAL, gText_SelectorArrow3, xPos, yPos, 0, 0);
 }
 
 u8 ChangeMenuGridCursorPosition(s8 deltaX, s8 deltaY)
@@ -1588,7 +1589,7 @@ void PrintMenuTable(u8 windowId, u8 itemCount, const struct MenuAction *menuActi
     u32 i;
 
     for (i = 0; i < itemCount; i++)
-        AddTextPrinterParameterized(windowId, 1, menuActions[i].text, 8, (i * 16) + 1, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(windowId, FONT_NORMAL, menuActions[i].text, 8, (i * 16) + 1, TEXT_SKIP_DRAW, NULL);
 
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
@@ -1652,7 +1653,7 @@ void PrintMenuGridTable(u8 windowId, u8 optionWidth, u8 columns, u8 rows, const 
     for (i = 0; i < rows; i++)
     {
         for (j = 0; j < columns; j++)
-            AddTextPrinterParameterized(windowId, 1, menuActions[(i * columns) + j].text, (optionWidth * j) + 8, (i * 16) + 1, TEXT_SKIP_DRAW, NULL);
+            AddTextPrinterParameterized(windowId, FONT_NORMAL, menuActions[(i * columns) + j].text, (optionWidth * j) + 8, (i * 16) + 1, TEXT_SKIP_DRAW, NULL);
     }
     CopyWindowToVram(windowId, COPYWIN_GFX);
 }
@@ -1986,7 +1987,7 @@ void PrintPlayerNameOnWindow(u8 windowId, const u8 *src, u16 x, u16 y)
 
     StringExpandPlaceholders(gStringVar4, src);
 
-    AddTextPrinterParameterized(windowId, 1, gStringVar4, x, y, TEXT_SKIP_DRAW, 0);
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, x, y, TEXT_SKIP_DRAW, 0);
 }
 
 static void UNUSED UnusedBlitBitmapRect(const struct Bitmap *src, struct Bitmap *dst, u16 srcX, u16 srcY, u16 dstX, u16 dstY, u16 width, u16 height)

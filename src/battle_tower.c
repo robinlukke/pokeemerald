@@ -769,7 +769,9 @@ struct
     u8 nature;
     u8 evs[NUM_STATS];
     u16 moves[MAX_MON_MOVES];
-} static const sStevenMons[MULTI_PARTY_SIZE] =
+}
+
+static const sStevenMons[MULTI_PARTY_SIZE] =
 {
     {
         .species = SPECIES_METANG,
@@ -2960,6 +2962,8 @@ static void FillPartnerParty(u16 trainerId)
 {
     s32 i, j;
     u32 ivs, level;
+	u8 PlayerMonLevel;
+	u8 StevenMonLevel;
     u32 friendship;
     u16 monId;
     u32 otID;
@@ -2968,15 +2972,28 @@ static void FillPartnerParty(u16 trainerId)
 
     if (trainerId == TRAINER_STEVEN_PARTNER)
     {
+		PlayerMonLevel = GetHighestLevelInPlayerParty();
+		StevenMonLevel = sStevenMons[i].level;
+		
+		if (StevenMonLevel >= PlayerMonLevel)
+			{
+				level = StevenMonLevel;
+			}
+		else
+			{
+				level = PlayerMonLevel;
+			}
+		
         for (i = 0; i < MULTI_PARTY_SIZE; i++)
         {
             do
             {
                 j = Random32();
-            } while (IsShinyOtIdPersonality(STEVEN_OTID, j) || sStevenMons[i].nature != GetNatureFromPersonality(j));
+            }
+			while (IsShinyOtIdPersonality(STEVEN_OTID, j) || sStevenMons[i].nature != GetNatureFromPersonality(j));
             CreateMon(&gPlayerParty[MULTI_PARTY_SIZE + i],
                       sStevenMons[i].species,
-                      sStevenMons[i].level,
+                      level,
                       sStevenMons[i].fixedIV,
                       TRUE,
                       #ifdef BUGFIX

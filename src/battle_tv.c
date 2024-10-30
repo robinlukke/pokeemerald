@@ -299,7 +299,10 @@ static const u16 sPoints_MoveEffect[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_WATER_SPORT] = 4,
     [EFFECT_CALM_MIND] = 1,
     [EFFECT_DRAGON_DANCE] = 1,
-    [EFFECT_CAMOUFLAGE] = 3
+    [EFFECT_CAMOUFLAGE] = 3,
+	[EFFECT_GROWTH] = 1,
+	[EFFECT_SPECIAL_ATTACK_UP_3] = 1,
+    [EFFECT_BLIZZARD] = 1
 };
 
 static const u16 sPoints_Effectiveness[] =
@@ -529,12 +532,25 @@ static const u16 *const sPointsArray[] =
 // even if current Pokémon does not have corresponding move
 static const u16 sSpecialBattleStrings[] =
 {
-    STRINGID_PKMNPERISHCOUNTFELL, STRINGID_PKMNWISHCAMETRUE, STRINGID_PKMNLOSTPPGRUDGE,
-    STRINGID_PKMNTOOKFOE, STRINGID_PKMNABSORBEDNUTRIENTS, STRINGID_PKMNANCHOREDITSELF,
-    STRINGID_PKMNAFFLICTEDBYCURSE, STRINGID_PKMNSAPPEDBYLEECHSEED, STRINGID_PKMNLOCKEDINNIGHTMARE,
-    STRINGID_PKMNHURTBY, STRINGID_PKMNHURTBYBURN, STRINGID_PKMNHURTBYPOISON,
-    STRINGID_PKMNHURTBYSPIKES, STRINGID_ATTACKERFAINTED, STRINGID_TARGETFAINTED,
-    STRINGID_PKMNHITWITHRECOIL, STRINGID_PKMNCRASHED, TABLE_END
+	STRINGID_PKMNPERISHCOUNTFELL,
+	STRINGID_PKMNWISHCAMETRUE,
+	STRINGID_PKMNLOSTPPGRUDGE,
+	STRINGID_PKMNTOOKFOE,
+	STRINGID_PKMNABSORBEDNUTRIENTS,
+	STRINGID_PKMNANCHOREDITSELF,
+	STRINGID_PKMNAFFLICTEDBYCURSE,
+	STRINGID_PKMNSAPPEDBYLEECHSEED,
+	STRINGID_PKMNLOCKEDINNIGHTMARE,
+	STRINGID_PKMNHURTBY,
+	STRINGID_PKMNHURTBYBURN,
+	STRINGID_PKMNHURTBYFROSTBITE,
+	STRINGID_PKMNHURTBYPOISON,
+	STRINGID_PKMNHURTBYSPIKES,
+	STRINGID_ATTACKERFAINTED,
+	STRINGID_TARGETFAINTED,
+	STRINGID_PKMNHITWITHRECOIL,
+	STRINGID_PKMNCRASHED,
+	TABLE_END
 };
 
 // code
@@ -772,6 +788,14 @@ void BattleTv_SetDataBasedOnString(u16 stringId)
             tvPtr->side[atkSide].faintCauseMonId = gBattlerPartyIndexes[gBattlerAttacker];
         }
         break;
+	case STRINGID_PKMNHURTBYFROSTBITE:
+        if (GetMonData(atkMon, MON_DATA_HP, NULL) != 0)
+        {
+            if (tvPtr->mon[atkSide][gBattlerPartyIndexes[gBattlerAttacker]].brnMonId != 0)
+                AddMovePoints(PTS_STATUS_DMG, 4, tvPtr->mon[atkSide][gBattlerPartyIndexes[gBattlerAttacker]].brnMonId - 1, tvPtr->mon[atkSide][gBattlerPartyIndexes[gBattlerAttacker]].brnMoveSlot);
+            tvPtr->side[atkSide].faintCause = FNT_BURN;
+            tvPtr->side[atkSide].faintCauseMonId = gBattlerPartyIndexes[gBattlerAttacker];
+        }
     case STRINGID_PKMNWASPOISONED:
         tvPtr->mon[effSide][gBattlerPartyIndexes[gEffectBattler]].psnMonId = gBattlerPartyIndexes[gBattlerAttacker] + 1;
         tvPtr->mon[effSide][gBattlerPartyIndexes[gEffectBattler]].psnMoveSlot = moveSlot;
@@ -1246,7 +1270,7 @@ static void AddMovePoints(u8 caseId, u16 arg1, u8 arg2, u8 arg3)
         break;
     case PTS_REFLECT:
         // If hit Reflect with damaging physical move
-        if (IS_TYPE_PHYSICAL(type) && power != 0 && tvPtr->side[defSide].reflectMonId != 0)
+        if (IS_MOVE_PHYSICAL(gCurrentMove) && power != 0 && tvPtr->side[defSide].reflectMonId != 0)
         {
             u32 id = (tvPtr->side[defSide].reflectMonId - 1) * 4;
             movePoints->points[defSide][id + tvPtr->side[defSide].reflectMoveSlot] += sPointsArray[caseId][0];
@@ -1254,7 +1278,7 @@ static void AddMovePoints(u8 caseId, u16 arg1, u8 arg2, u8 arg3)
         break;
     case PTS_LIGHT_SCREEN:
         // If hit Light Screen with damaging special move
-        if (!IS_TYPE_PHYSICAL(type) && power != 0 && tvPtr->side[defSide].lightScreenMonId != 0)
+        if (IS_MOVE_SPECIAL(gCurrentMove) && power != 0 && tvPtr->side[defSide].lightScreenMonId != 0)
         {
             u32 id = (tvPtr->side[defSide].lightScreenMonId - 1) * 4;
             movePoints->points[defSide][id + tvPtr->side[defSide].lightScreenMoveSlot] += sPointsArray[caseId][0];

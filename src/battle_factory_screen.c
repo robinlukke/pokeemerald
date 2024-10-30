@@ -3824,8 +3824,8 @@ static void Swap_PrintYesNoOptions(void)
 
 static void Swap_PrintActionString(const u8 *str, u32 y, u32 windowId)
 {
-    s32 x = GetStringRightAlignXOffset(FONT_SMALL, str, 70);
-    AddTextPrinterParameterized3(windowId, FONT_SMALL, x, y, sSwapMenuOptionsTextColors, 0, str);
+    s32 x = GetStringRightAlignXOffset(FONT_NORMAL, str, 70);
+    AddTextPrinterParameterized3(windowId, FONT_NORMAL, x, y, sSwapMenuOptionsTextColors, 0, str);
 }
 
 static void Swap_PrintActionStrings(void)

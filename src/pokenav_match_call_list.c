@@ -415,12 +415,12 @@ void BufferMatchCallNameAndDesc(struct PokenavMatchCallEntry *matchCallEntry, u8
 
     if (className && trainerName)
     {
-        u8 *str2 = GetStringClearToWidth(str, FONT_NARROW, className, 69);
-        GetStringClearToWidth(str2, FONT_NARROW, trainerName, 51);
+        u8 *str2 = GetStringClearToWidth(str, FONT_NORMAL, className, 69);
+        GetStringClearToWidth(str2, FONT_NORMAL, trainerName, 51);
     }
     else
     {
-        GetStringClearToWidth(str, FONT_NARROW, NULL, 120);
+        GetStringClearToWidth(str, FONT_NORMAL, NULL, 120);
     }
 }
 

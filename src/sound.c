@@ -561,6 +561,8 @@ static void RestoreBGMVolumeAfterPokemonCry(void)
 
 void PlayBGM(u16 songNum)
 {
+	if (gSaveBlock2Ptr->optionsDisableMusic == OPTIONS_DISABLE_MUSIC_YES)
+        songNum = 0;
     if (gDisableMusic)
         songNum = 0;
     if (songNum == MUS_NONE)

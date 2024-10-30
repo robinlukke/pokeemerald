@@ -84,7 +84,7 @@ void InitIntrHandlers(void);
 static void WaitForVBlank(void);
 void EnableVCountIntrAtLine150(void);
 
-#define B_START_SELECT (B_BUTTON | START_BUTTON | SELECT_BUTTON)
+#define SELECT_L_R (SELECT_BUTTON | L_BUTTON | R_BUTTON)
 
 void AgbMain()
 {
@@ -133,8 +133,8 @@ void AgbMain()
         ReadKeys();
 
         if (gSoftResetDisabled == FALSE
-         && JOY_HELD_RAW(A_BUTTON)
-         && JOY_HELD_RAW(B_START_SELECT) == B_START_SELECT)
+         && JOY_HELD_RAW(START_BUTTON)
+         && JOY_HELD_RAW(SELECT_L_R) == SELECT_L_R)
         {
             rfu_REQ_stopMode();
             rfu_waitREQComplete();
@@ -410,6 +410,11 @@ static void IntrDummy(void)
 static void WaitForVBlank(void)
 {
     gMain.intrCheck &= ~INTR_FLAG_VBLANK;
+    if(!gWirelessCommType)
+    {
+        asm("swi 0x5");
+        return;
+    }
 
     while (!(gMain.intrCheck & INTR_FLAG_VBLANK))
         ;

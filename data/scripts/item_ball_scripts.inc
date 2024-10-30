@@ -630,8 +630,8 @@ ArtisanCave_1F_EventScript_ItemCarbos::
 	finditem ITEM_CARBOS
 	end
 
-MagmaHideout_1F_EventScript_ItemRareCandy::
-	finditem ITEM_RARE_CANDY
+MagmaHideout_1F_EventScript_ItemItemTMFlamethrower::
+	finditem ITEM_TM_FLAMETHROWER
 	end
 
 MagmaHideout_2F_2R_EventScript_ItemMaxElixir::

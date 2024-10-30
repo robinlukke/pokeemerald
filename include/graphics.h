@@ -2742,6 +2742,7 @@ extern const u8 gMonIcon_Chimecho[];
 extern const u8 gMonFootprint_Chimecho[];
 extern const u32 gMonPic_Egg[];
 extern const u32 gMonPalette_Egg[];
+extern const u32 gMonShinyPalette_Egg[];										
 extern const u32 gMonFrontPic_Egg[];
 extern const u32 gMonStillFrontPic_Egg[];
 extern const u8 gMonIcon_Egg[];
