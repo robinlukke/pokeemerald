@@ -948,3 +948,7 @@ void ItemId_GetHoldEffectParam_Script()
     VarSet(VAR_RESULT, ItemId_GetHoldEffectParam(VarGet(VAR_0x8004)));
 }
 
+u8 ItemId_CanBeHeld(u16 itemId)
+{
+    return gItems[SanitizeItemId(itemId)].canBeHeld;
+}

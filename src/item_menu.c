@@ -1938,6 +1938,10 @@ static void ItemMenu_Give(u8 taskId)
             Task_FadeAndCloseBagMenu(taskId);
         }
     }
+	else if (!(ItemId_CanBeHeld(gSpecialVar_ItemId)))
+		{
+        PrintItemCantBeHeld(taskId);
+		}
     else
     {
         PrintItemCantBeHeld(taskId);

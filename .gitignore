@@ -39,3 +39,5 @@ prefabs.json
 *.sym
 *.js
 desktop.ini
+path for msys.txt
+path for msys wsl.txt

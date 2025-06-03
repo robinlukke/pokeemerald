@@ -5273,8 +5273,8 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
     if (!gPaletteFade.active)
     {
         ResetSpriteData();
-        gBattleMainFunc = ReturnFromBattleToOverworld;
-        return;
+		gBattleMainFunc = ReturnFromBattleToOverworld;
+		return;
     }
 
     FreeAllWindowBuffers();
