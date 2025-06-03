@@ -7,7 +7,7 @@
 static struct SiiRtcInfo sRtc;
 
 // iwram common
-struct Time gLocalTime;
+COMMON_DATA struct Time gLocalTime = {0};
 
 struct Time* GetFakeRtc(void)
 {

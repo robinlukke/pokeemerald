@@ -2313,7 +2313,7 @@ BattleScript_EffectNaturePower::
 	attackcanceler
 	attackstring
 	pause B_WAIT_TIME_SHORT
-	callterrainattack
+	callenvironmentattack
 	printstring STRINGID_NATUREPOWERTURNEDINTO
 	waitmessage B_WAIT_TIME_SHORT
 	return
@@ -2823,7 +2823,7 @@ BattleScript_EffectCamouflage::
 	attackcanceler
 	attackstring
 	ppreduce
-	settypetoterrain BattleScript_ButItFailed
+	settypetoenvironment BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	printstring STRINGID_PKMNCHANGEDTYPE

@@ -121,8 +121,8 @@ static EWRAM_DATA u8 sPokeBallRotation = 0;
 static EWRAM_DATA struct PokedexListItem *sPokedexListItem = NULL;
 
 // This is written to, but never read.
-u8 gUnusedPokedexU8;
-void (*gPokedexVBlankCB)(void);
+COMMON_DATA u8 gUnusedPokedexU8 = 0;
+COMMON_DATA void (*gPokedexVBlankCB)(void) = NULL;
 
 struct SearchOptionText
 {
@@ -2398,7 +2398,9 @@ static void CreateMonListEntry(u8 position, u16 b, u16 ignored)
         if (vOffset >= LIST_SCROLL_STEP)
             vOffset -= LIST_SCROLL_STEP;
         if (entryNum < 0 || entryNum >= NATIONAL_DEX_COUNT || sPokedexView->pokedexList[entryNum].dexNum == 0xFFFF)
+        {
             ClearMonListEntry(17, vOffset * 2, ignored);
+        }
         else
         {
             ClearMonListEntry(17, vOffset * 2, ignored);
@@ -2687,7 +2689,9 @@ static bool8 TryDoInfoScreenScroll(void)
         }
 
         if (sPokedexView->selectedPokemon == selectedPokemon)
+        {
             return FALSE;
+        }
         else
         {
             sPokedexView->selectedPokemon = selectedPokemon;
@@ -2710,7 +2714,9 @@ static bool8 TryDoInfoScreenScroll(void)
         }
 
         if (sPokedexView->selectedPokemon == selectedPokemon)
+        {
             return FALSE;
+        }
         else
         {
             sPokedexView->selectedPokemon = selectedPokemon;
@@ -4583,7 +4589,7 @@ static void UNUSED PrintDecimalNum(u8 windowId, u16 num, u8 left, u8 top)
 static void DrawFootprint(u8 windowId, u16 dexNum)
 {
     u8 footprint4bpp[TILE_SIZE_4BPP * NUM_FOOTPRINT_TILES];
-    const u8 * footprintGfx = gMonFootprintTable[NationalPokedexNumToSpecies(dexNum)];
+    const u8 *footprintGfx = gMonFootprintTable[NationalPokedexNumToSpecies(dexNum)];
     u16 tileIdx = 0;
     u16 i, j;
 

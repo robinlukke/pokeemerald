@@ -20,9 +20,7 @@ MossdeepCity_Mart_Pokemart:
 	.2byte ITEM_FULL_HEAL
 	.2byte ITEM_REVIVE
 	.2byte ITEM_MAX_REPEL
-	.2byte ITEM_NONE
-	release
-	end
+	pokemartlistend
 
 MossdeepCity_Mart_EventScript_Woman::
 	msgbox MossdeepCity_Mart_Text_ReviveIsFantastic, MSGBOX_NPC

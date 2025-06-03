@@ -1,7 +1,7 @@
 #ifndef GUARD_TEXT_H
 #define GUARD_TEXT_H
 
-#include "characters.h"
+#include "constants/characters.h"
 
 
 
@@ -139,14 +139,14 @@ extern struct TextGlyph gCurGlyph;
 
 void DeactivateAllTextPrinters(void);
 u16 AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 y, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16));
-bool16 AddTextPrinter(struct TextPrinterTemplate *template, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16));
+bool16 AddTextPrinter(struct TextPrinterTemplate *printerTemplate, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16));
 void RunTextPrinters(void);
 bool16 IsTextPrinterActive(u8 id);
 void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor);
 void SaveTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);
 void RestoreTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);
 void DecompressGlyphTile(const void *src_, void *dest_);
-void CopyGlyphToWindow(struct TextPrinter *x);
+void CopyGlyphToWindow(struct TextPrinter *textPrinter);
 void ClearTextSpan(struct TextPrinter *textPrinter, u32 width);
 
 
