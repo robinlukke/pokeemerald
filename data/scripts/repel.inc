@@ -7,7 +7,7 @@ EventScript_RepelWoreOff::
 	compare VAR_RESULT, 0
 	goto_if_eq EventScript_RepelWoreOff_ChooseNo
 	copyvar VAR_0x8004, VAR_REPEL_LAST_USED
-	callnative ItemId_GetHoldEffectParam_Script
+	callnative GetItemHoldEffectParam_Script
 	copyvar VAR_REPEL_STEP_COUNT, VAR_RESULT
 	bufferitemname 1, VAR_REPEL_LAST_USED
 	removeitem VAR_REPEL_LAST_USED, 1
@@ -27,8 +27,8 @@ EventScript_RepelWoreOff_End:
 	end
 
 Text_RepelWoreOff:
-	.string "REPEL's effect wore off…$"
+	.string "Repel's effect wore off…$"
 
 Text_RepelWoreOff_UseAnother:
-	.string "REPEL's effect wore off…\n"
+	.string "Repel's effect wore off…\n"
 	.string "Use another?$"

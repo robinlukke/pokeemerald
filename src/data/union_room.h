@@ -418,10 +418,10 @@ static const u8 *const sTrainerCardReactionTexts[GENDER_COUNT][2] = {
     }
 };
 
-ALIGNED(4) static const u8 sText_MaleTraded1[] = _("Yeahah!\nI really wanted this POKéMON!\p");
-ALIGNED(4) static const u8 sText_MaleTraded2[] = _("Finally, a trade got me that\nPOKéMON I'd wanted a long time.\p");
-ALIGNED(4) static const u8 sText_FemaleTraded1[] = _("I'm trading POKéMON right now.\p");
-ALIGNED(4) static const u8 sText_FemaleTraded2[] = _("I finally got that POKéMON I\nwanted in a trade!\p");
+ALIGNED(4) static const u8 sText_MaleTraded1[] = _("Yeahah!\nI really wanted this Pokémon!\p");
+ALIGNED(4) static const u8 sText_MaleTraded2[] = _("Finally, a trade got me that\nPokémon I'd wanted a long time.\p");
+ALIGNED(4) static const u8 sText_FemaleTraded1[] = _("I'm trading Pokémon right now.\p");
+ALIGNED(4) static const u8 sText_FemaleTraded2[] = _("I finally got that Pokémon I\nwanted in a trade!\p");
 
 static const u8 *const sTradeReactionTexts[GENDER_COUNT][4] = {
     {

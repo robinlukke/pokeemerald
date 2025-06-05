@@ -740,14 +740,14 @@ Route110_TrickHouseEntrance_Text_ConcealedBeneathCushion:
 Route110_TrickHouseEntrance_Text_TheyCallMeTrickMaster:
 	.string "Behold!\p"
 	.string "For I am the greatest living mystery\n"
-	.string "of a man in all of HOENN!\l"
+	.string "of a man in all of Hoenn!\l"
 	.string "They call me…\p"
-	.string "The TRICK MASTER!\n"
+	.string "The Trick Master!\n"
 	.string "Wahahaha! Glad to meet you!$"
 
 Route110_TrickHouseEntrance_Text_ComeToChallengeTrickHouse:
 	.string "You, you've come to challenge\n"
-	.string "my TRICK HOUSE, haven't you?\p"
+	.string "my Trick House, haven't you?\p"
 	.string "That's why you're here, isn't it?\n"
 	.string "Yes, it is!\p"
 	.string "Consider your challenge accepted!\p"
@@ -765,7 +765,7 @@ Route110_TrickHouseEntrance_Text_GoInHoleBehindScroll:
 Route110_TrickHouseEntrance_Text_LeavingOnJourneyNote:
 	.string "There is a note affixed to the scroll…\p"
 	.string "“I am leaving on a journey.\n"
-	.string "Don't look for me. TRICK MASTER”$"
+	.string "Don't look for me. Trick Master”$"
 
 Route110_TrickHouseEntrance_Text_NextTimeUseThisTrick:
 	.string "For the next time, I'll use this trick,\n"
@@ -795,10 +795,10 @@ Route110_TrickHouseEntrance_Text_DidYouNotComeToClaimReward:
 	.string "Did you not come to claim your reward?$"
 
 Route110_TrickHouseEntrance_Text_MechadollWhichTent:
-	.string "MECHADOLL 5 I AM!\n"
+	.string "Mechadoll 5 I AM!\n"
 	.string "IF REWARD IS NOT TAKEN BY YOU,\l"
-	.string "THEN TRICK MASTER YOU CANNOT FOLLOW.\p"
-	.string "RED TENT OR BLUE TENT,\n"
+	.string "THEN Trick Master YOU CANNOT FOLLOW.\p"
+	.string "Red Tent OR Blue Tent,\n"
 	.string "WHICH DO YOU PREFER?$"
 
 Route110_TrickHouseEntrance_Text_ThenFarewell:

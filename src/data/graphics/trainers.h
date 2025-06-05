@@ -7,8 +7,8 @@ const u32 gTrainerPalette_AquaGruntM[] = INCBIN_U32("graphics/trainers/front_pic
 const u32 gTrainerFrontPic_PokemonBreederF[] = INCBIN_U32("graphics/trainers/front_pics/pokemon_breeder_f.4bpp.lz");
 const u32 gTrainerPalette_PokemonBreederF[] = INCBIN_U32("graphics/trainers/front_pics/pokemon_breeder_f.gbapal.lz");
 
-const u32 gTrainerFrontPic_CoolTrainerM[] = INCBIN_U32("graphics/trainers/front_pics/cooltrainer_m.4bpp.lz");
-const u32 gTrainerPalette_CoolTrainerM[] = INCBIN_U32("graphics/trainers/front_pics/cooltrainer_m.gbapal.lz");
+const u32 gTrainerFrontPic_AceTrainerM[] = INCBIN_U32("graphics/trainers/front_pics/acetrainer_m.4bpp.lz");
+const u32 gTrainerPalette_AceTrainerM[] = INCBIN_U32("graphics/trainers/front_pics/acetrainer_m.gbapal.lz");
 
 const u32 gTrainerFrontPic_BirdKeeper[] = INCBIN_U32("graphics/trainers/front_pics/bird_keeper.4bpp.lz");
 const u32 gTrainerPalette_BirdKeeper[] = INCBIN_U32("graphics/trainers/front_pics/bird_keeper.gbapal.lz");
@@ -58,8 +58,8 @@ const u32 gTrainerPalette_TuberF[] = INCBIN_U32("graphics/trainers/front_pics/tu
 const u32 gTrainerFrontPic_TuberM[] = INCBIN_U32("graphics/trainers/front_pics/tuber_m.4bpp.lz");
 const u32 gTrainerPalette_TuberM[] = INCBIN_U32("graphics/trainers/front_pics/tuber_m.gbapal.lz");
 
-const u32 gTrainerFrontPic_CoolTrainerF[] = INCBIN_U32("graphics/trainers/front_pics/cooltrainer_f.4bpp.lz");
-const u32 gTrainerPalette_CoolTrainerF[] = INCBIN_U32("graphics/trainers/front_pics/cooltrainer_f.gbapal.lz");
+const u32 gTrainerFrontPic_AceTrainerF[] = INCBIN_U32("graphics/trainers/front_pics/acetrainer_f.4bpp.lz");
+const u32 gTrainerPalette_AceTrainerF[] = INCBIN_U32("graphics/trainers/front_pics/acetrainer_f.gbapal.lz");
 
 const u32 gTrainerFrontPic_Lady[] = INCBIN_U32("graphics/trainers/front_pics/lady.4bpp.lz");
 const u32 gTrainerPalette_Lady[] = INCBIN_U32("graphics/trainers/front_pics/lady.gbapal.lz");

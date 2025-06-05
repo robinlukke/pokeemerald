@@ -3264,7 +3264,7 @@ const struct Item gItems[] =
 
     [ITEM_WAILMER_PAIL] =
     {
-        .name = _("Wailmer Pail"),
+        .name = _("WAILMER Pail"),
         .itemId = ITEM_WAILMER_PAIL,
         .price = 0,
         .description = sWailmerPailDesc,

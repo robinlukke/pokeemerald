@@ -627,7 +627,7 @@ MauvilleCity_GameCorner_EventScript_NoCoinCase::
 	end
 
 MauvilleCity_GameCorner_Text_ThisIsMauvilleGameCorner:
-	.string "This is MAUVILLE GAME CORNER.$"
+	.string "This is Mauville GAME Corner.$"
 
 MauvilleCity_GameCorner_Text_NeedCoinCaseForCoins:
 	.string "Okay, you wanted some COINS for\n"
@@ -697,7 +697,7 @@ MauvilleCity_GameCorner_Text_CantCarryAnyMore:
 
 MauvilleCity_GameCorner_Text_GotTwoOfSameDollWantOne:
 	.string "I made a mistake and got two of\n"
-	.string "the same DOLLS.\p"
+	.string "the same Dolls.\p"
 	.string "Would you like one of them?$"
 
 MauvilleCity_GameCorner_Text_HereYouGo2:
@@ -727,9 +727,9 @@ MauvilleCity_GameCorner_Text_LuckOnlyLastSoLongTakeCoins:
 	.string "Here, take some COINS!$"
 
 MauvilleCity_GameCorner_Text_MauvilleSomethingForEveryone:
-	.string "MAUVILLE has something for\n"
+	.string "Mauville has something for\n"
 	.string "everyone.\p"
-	.string "For me, it's the GAME CORNER.$"
+	.string "For me, it's the GAME Corner.$"
 
 MauvilleCity_GameCorner_Text_RouletteTablesDifferentRates:
 	.string "The ROULETTE tables have different\n"
@@ -743,7 +743,7 @@ MauvilleCity_GameCorner_Text_EasyToLoseTrackOfTime:
 
 MauvilleCity_GameCorner_Text_CoinsAreNeededToPlay:
 	.string "COINS are needed to play here\n"
-	.string "in the GAME CORNER.$"
+	.string "in the GAME Corner.$"
 
 MauvilleCity_GameCorner_Text_RouletteOnlyLuck:
 	.string "This ROULETTE thing…\n"

@@ -10,7 +10,7 @@ static const union AnimCmd *const sAnims_PokemonBreederF[] ={
     sAnim_GeneralFrame0,
 };
 
-static const union AnimCmd *const sAnims_CoolTrainerM[] ={
+static const union AnimCmd *const sAnims_AceTrainerM[] ={
     sAnim_GeneralFrame0,
 };
 
@@ -78,7 +78,7 @@ static const union AnimCmd *const sAnims_TuberM[] ={
     sAnim_GeneralFrame0,
 };
 
-static const union AnimCmd *const sAnims_CoolTrainerF[] ={
+static const union AnimCmd *const sAnims_AceTrainerF[] ={
     sAnim_GeneralFrame0,
 };
 
@@ -375,7 +375,7 @@ const union AnimCmd *const *const gTrainerFrontAnimsPtrTable[] =
     [TRAINER_PIC_HIKER] = sAnims_Hiker,
     [TRAINER_PIC_AQUA_GRUNT_M] = sAnims_AquaGruntM,
     [TRAINER_PIC_POKEMON_BREEDER_F] = sAnims_PokemonBreederF,
-    [TRAINER_PIC_COOLTRAINER_M] = sAnims_CoolTrainerM,
+    [TRAINER_PIC_ACETRAINER_M] = sAnims_AceTrainerM,
     [TRAINER_PIC_BIRD_KEEPER] = sAnims_BirdKeeper,
     [TRAINER_PIC_COLLECTOR] = sAnims_Collector,
     [TRAINER_PIC_AQUA_GRUNT_F] = sAnims_AquaGruntF,
@@ -392,7 +392,7 @@ const union AnimCmd *const *const gTrainerFrontAnimsPtrTable[] =
     [TRAINER_PIC_INTERVIEWER] = sAnims_Interviewer,
     [TRAINER_PIC_TUBER_F] = sAnims_TuberF,
     [TRAINER_PIC_TUBER_M] = sAnims_TuberM,
-    [TRAINER_PIC_COOLTRAINER_F] = sAnims_CoolTrainerF,
+    [TRAINER_PIC_ACETRAINER_F] = sAnims_AceTrainerF,
     [TRAINER_PIC_LADY] = sAnims_Lady,
     [TRAINER_PIC_BEAUTY] = sAnims_Beauty,
     [TRAINER_PIC_RICH_BOY] = sAnims_RichBoy,

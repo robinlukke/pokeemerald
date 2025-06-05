@@ -1938,7 +1938,7 @@ static void ItemMenu_Give(u8 taskId)
             Task_FadeAndCloseBagMenu(taskId);
         }
     }
-	else if (!(ItemId_CanBeHeld(gSpecialVar_ItemId)))
+	else if (!(CanItemBeHeld(gSpecialVar_ItemId)))
 		{
         PrintItemCantBeHeld(taskId);
 		}
@@ -2072,7 +2072,7 @@ static void Task_ItemContext_Sell(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    if (ItemId_GetPrice(gSpecialVar_ItemId) == 0 || ItemId_GetPocket(gSpecialVar_ItemId) == POCKET_TM_HM)
+    if (GetItemPrice(gSpecialVar_ItemId) == 0 || GetItemPocket(gSpecialVar_ItemId) == POCKET_TM_HM)
     {
         CopyItemName(gSpecialVar_ItemId, gStringVar2);
         StringExpandPlaceholders(gStringVar4, gText_CantBuyKeyItem);

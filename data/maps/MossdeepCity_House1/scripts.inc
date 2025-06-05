@@ -33,9 +33,9 @@ MossdeepCity_House1_Text_ItLikesXPokeblocks:
 
 MossdeepCity_House1_Text_DoesntLikeOrDislikePokeblocks:
 	.string "It doesn't appear to like or dislike\n"
-	.string "any {POKEBLOCK}S.$"
+	.string "any Pokéblocks.$"
 
 MossdeepCity_House1_Text_HusbandCanTellPokeblockMonLikes:
 	.string "My husband can tell what kind of\n"
-	.string "{POKEBLOCK}S a POKéMON likes at a glance.$"
+	.string "PokéblockS a Pokémon likes at a glance.$"
 

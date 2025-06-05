@@ -2824,7 +2824,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                  && TARGET_TURN_DAMAGED
                  && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
 				 && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS)
-                 /* && (Random() % 10) == 0 */)
+                 && (Random() % 10) == 0)
                 {
                     do
                     {
@@ -3384,11 +3384,11 @@ u8 ItemBattleEffects(u8 caseID, u8 battler, bool8 moveTurn)
                 }
                 break;
             case HOLD_EFFECT_RESTORE_PERCENT_HP:
-                if (gBattleMons[battlerId].hp <= gBattleMons[battlerId].maxHP / 2 && !moveTurn)
+                if (gBattleMons[battler].hp <= gBattleMons[battler].maxHP / 2 && !moveTurn)
                 {
-                    gBattleMoveDamage = (gBattleMons[battlerId].maxHP * battlerHoldEffectParam) / 100;
-                    if (gBattleMons[battlerId].hp + gBattleMoveDamage > gBattleMons[battlerId].maxHP)
-                        gBattleMoveDamage = gBattleMons[battlerId].maxHP - gBattleMons[battlerId].hp;
+                    gBattleMoveDamage = (gBattleMons[battler].maxHP * battlerHoldEffectParam) / 100;
+                    if (gBattleMons[battler].hp + gBattleMoveDamage > gBattleMons[battler].maxHP)
+                        gBattleMoveDamage = gBattleMons[battler].maxHP - gBattleMons[battler].hp;
                     gBattleMoveDamage *= -1;
                     BattleScriptExecute(BattleScript_ItemHealHP_RemoveItem);
                     effect = ITEM_HP_CHANGE;
