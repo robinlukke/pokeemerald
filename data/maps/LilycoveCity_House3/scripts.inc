@@ -124,7 +124,7 @@ LilycoveCity_House3_Text_ExplainPokeblocks:
 	.string "A good Pokéblock has a low feel\n"
 	.string "rating and a high level.\p"
 	.string "A Pokémon can eat more good\n"
-	.string "PokéblockS than ordinary ones, too.\p"
+	.string "Pokéblocks than ordinary ones, too.\p"
 	.string "And this is important.\p"
 	.string "If you want to make smooth Pokéblocks,\n"
 	.string "use different kinds of Berries.\p"

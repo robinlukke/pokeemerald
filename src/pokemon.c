@@ -4672,7 +4672,7 @@ void GetSpeciesName(u8 *name, u16 species)
 u8 CalculatePPWithBonus(u16 move, u8 ppBonuses, u8 moveIndex)
 {
     u8 basePP = gBattleMoves[move].pp;
-    return basePP + ((basePP * 20 * ((gPPUpGetMask[moveIndex] & ppBonuses) >> (2 * moveIndex))) / 100);
+    return basePP/*  + ((basePP * 20 * ((gPPUpGetMask[moveIndex] & ppBonuses) >> (2 * moveIndex))) / 100) */;
 }
 
 void RemoveMonPPBonus(struct Pokemon *mon, u8 moveIndex)
@@ -6956,6 +6956,7 @@ void BoxMonRestorePP(struct BoxPokemon *boxMon)
             u16 move = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, 0);
             u16 bonus = GetBoxMonData(boxMon, MON_DATA_PP_BONUSES, 0);
             u8 pp = CalculatePPWithBonus(move, bonus, i);
+			SetBoxMonData(boxMon, MON_DATA_PP1 + i, 0);
             SetBoxMonData(boxMon, MON_DATA_PP1 + i, &pp);
         }
     }

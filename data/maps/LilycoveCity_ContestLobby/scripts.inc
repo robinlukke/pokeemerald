@@ -1076,5 +1076,5 @@ LilycoveCity_ContestLobby_Text_MadePokeblocksWithFamily:
 	.string "I made Pokéblocks with Mom, Dad, and\n"
 	.string "Big Sister. They turned out great!\p"
 	.string "I bet you can make smoother, better\n"
-	.string "PokéblockS if you have more people.$"
+	.string "Pokéblocks if you have more people.$"
 

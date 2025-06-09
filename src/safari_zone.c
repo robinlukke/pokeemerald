@@ -58,7 +58,7 @@ void EnterSafariMode(void)
     SetSafariZoneFlag();
     ClearAllPokeblockFeeders();
     gNumSafariBalls = 30;
-    sSafariZoneStepCounter = 500;
+//    sSafariZoneStepCounter = 500;
     sSafariZoneCaughtMons = 0;
     sSafariZonePkblkUses = 0;
 }
@@ -69,7 +69,7 @@ void ExitSafariMode(void)
     ResetSafariZoneFlag();
     ClearAllPokeblockFeeders();
     gNumSafariBalls = 0;
-    sSafariZoneStepCounter = 0;
+//    sSafariZoneStepCounter = 0;
 }
 
 bool8 SafariZoneTakeStep(void)
@@ -80,13 +80,13 @@ bool8 SafariZoneTakeStep(void)
     }
 
     DecrementFeederStepCounters();
-    sSafariZoneStepCounter--;
-    if (sSafariZoneStepCounter == 0)
-    {
-        ScriptContext_SetupScript(SafariZone_EventScript_TimesUp);
-        return TRUE;
-    }
-    return FALSE;
+//    sSafariZoneStepCounter--;
+//    if (sSafariZoneStepCounter == 0)
+//    {
+//        ScriptContext_SetupScript(SafariZone_EventScript_TimesUp);
+//        return TRUE;
+//    }
+//    return FALSE;
 }
 
 void SafariZoneRetirePrompt(void)
