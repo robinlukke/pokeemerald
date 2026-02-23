@@ -5498,19 +5498,16 @@ static void Cmd_yesnoboxlearnmove(void)
 
                     PREPARE_MOVE_BUFFER(gBattleTextBuff2, move)
 
-                    RemoveMonPPBonus(&gPlayerParty[gBattleStruct->expGetterMonId], movePosition);
                     SetMonMoveSlot(&gPlayerParty[gBattleStruct->expGetterMonId], gMoveToLearn, movePosition);
 
                     if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId && MOVE_IS_PERMANENT(0, movePosition))
                     {
-                        RemoveBattleMonPPBonus(&gBattleMons[0], movePosition);
                         SetBattleMonMoveSlot(&gBattleMons[0], gMoveToLearn, movePosition);
                     }
                     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE
                         && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId
                         && MOVE_IS_PERMANENT(2, movePosition))
                     {
-                        RemoveBattleMonPPBonus(&gBattleMons[2], movePosition);
                         SetBattleMonMoveSlot(&gBattleMons[2], gMoveToLearn, movePosition);
                     }
                 }
@@ -8222,7 +8219,6 @@ static void Cmd_copymovepermanently(void)
                 movePpData.moves[i] = gBattleMons[gBattlerAttacker].moves[i];
                 movePpData.pp[i] = gBattleMons[gBattlerAttacker].pp[i];
             }
-            movePpData.ppBonuses = gBattleMons[gBattlerAttacker].ppBonuses;
 
             BtlController_EmitSetMonData(B_COMM_TO_CONTROLLER, REQUEST_MOVES_PP_BATTLE, 0, sizeof(movePpData), &movePpData);
             MarkBattlerForControllerExec(gActiveBattler);

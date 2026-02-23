@@ -877,7 +877,7 @@ const struct Item gItems[] =
         .description = sPPUpDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_PPUp,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
     [ITEM_ZINC] =
@@ -899,7 +899,7 @@ const struct Item gItems[] =
         .description = sPPMaxDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_PPUp,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
     [ITEM_048] =

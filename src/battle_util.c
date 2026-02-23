@@ -3398,7 +3398,6 @@ u8 ItemBattleEffects(u8 caseID, u8 battler, bool8 moveTurn)
                 if (!moveTurn)
                 {
                     struct Pokemon *mon;
-                    u8 ppBonuses;
                     u16 move;
 
                     if (GetBattlerSide(battler) == B_SIDE_PLAYER)
@@ -3409,13 +3408,12 @@ u8 ItemBattleEffects(u8 caseID, u8 battler, bool8 moveTurn)
                     {
                         move = GetMonData(mon, MON_DATA_MOVE1 + i);
                         changedPP = GetMonData(mon, MON_DATA_PP1 + i);
-                        ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
                         if (move && changedPP == 0)
                             break;
                     }
                     if (i != MAX_MON_MOVES)
                     {
-                        u8 maxPP = CalculatePPWithBonus(move, ppBonuses, i);
+                        u8 maxPP = CalculatePP(move, i);
                         if (changedPP + battlerHoldEffectParam > maxPP)
                             changedPP = maxPP;
                         else

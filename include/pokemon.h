@@ -26,7 +26,7 @@ enum {
     MON_DATA_PP2,
     MON_DATA_PP3,
     MON_DATA_PP4,
-    MON_DATA_PP_BONUSES,
+    MON_DATA_FILLER2,
     MON_DATA_COOL,
     MON_DATA_BEAUTY,
     MON_DATA_CUTE,
@@ -101,7 +101,7 @@ struct PokemonSubstruct0
     u16 species;
     u16 heldItem;
     u32 experience;
-    u8 ppBonuses;
+    u8 filler2;
     u8 friendship;
     u16 filler;
 };
@@ -285,7 +285,7 @@ struct BattlePokemon
     /*0x2C*/ u16 maxHP;
     /*0x2E*/ u16 item;
     /*0x30*/ u8 nickname[POKEMON_NAME_LENGTH + 1];
-    /*0x3B*/ u8 ppBonuses;
+    /*0x3B*/ u8 filler2;
     /*0x3C*/ u8 otName[PLAYER_NAME_LENGTH + 1];
     /*0x44*/ u32 experience;
     /*0x48*/ u32 personality;
@@ -382,9 +382,6 @@ extern const struct SpeciesInfo gSpeciesInfo[];
 extern const u8 *const gItemEffectTable[];
 extern const u32 gExperienceTables[][MAX_LEVEL + 1];
 extern const u16 *const gLevelUpLearnsets[];
-extern const u8 gPPUpGetMask[];
-extern const u8 gPPUpClearMask[];
-extern const u8 gPPUpAddValues[];
 extern const u8 gStatStageRatios[MAX_STAT_STAGE + 1][2];
 extern const u16 gUnionRoomFacilityClasses[];
 extern const struct SpriteTemplate gBattlerSpriteTemplates[];
@@ -463,9 +460,7 @@ u8 GetSecretBaseTrainerClass(void);
 bool8 IsPlayerPartyAndPokemonStorageFull(void);
 bool8 IsPokemonStorageFull(void);
 void GetSpeciesName(u8 *name, u16 species);
-u8 CalculatePPWithBonus(u16 move, u8 ppBonuses, u8 moveIndex);
-void RemoveMonPPBonus(struct Pokemon *mon, u8 moveIndex);
-void RemoveBattleMonPPBonus(struct BattlePokemon *mon, u8 moveIndex);
+u8 CalculatePP(u16 move, u8 moveIndex);
 void CopyPlayerPartyMonToBattleData(u8 battler, u8 partyIndex);
 bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex);
 bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex, bool8 usedByAI);

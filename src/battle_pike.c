@@ -781,7 +781,6 @@ static void HealMon(struct Pokemon *mon)
 {
     u8 i;
     u16 hp;
-    u8 ppBonuses;
     u8 data[4];
 
     for (i = 0; i < 4; i++)
@@ -792,11 +791,10 @@ static void HealMon(struct Pokemon *mon)
     data[1] = hp >> 8;
     SetMonData(mon, MON_DATA_HP, data);
 
-    ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         u16 move = GetMonData(mon, MON_DATA_MOVE1 + i);
-        data[0] = CalculatePPWithBonus(move, ppBonuses, i);
+        data[0] = CalculatePP(move, i);
         SetMonData(mon, MON_DATA_PP1 + i, data);
     }
 
@@ -1295,11 +1293,10 @@ static void TryHealMons(u8 healCount)
         }
         else
         {
-            u8 ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
             for (j = 0; j < MAX_MON_MOVES; j++)
             {
                 u16 move = GetMonData(mon, MON_DATA_MOVE1 + j);
-                max = CalculatePPWithBonus(move, ppBonuses, j);
+                max = CalculatePP(move, j);
                 curr = GetMonData(mon, MON_DATA_PP1 + j);
                 if (curr < max)
                 {
@@ -1561,11 +1558,10 @@ static void IsPartyFullHealed(void)
         u16 max = GetMonData(mon, MON_DATA_MAX_HP);
         if (curr >= max && GetAilmentFromStatus(GetMonData(mon, MON_DATA_STATUS)) == AILMENT_NONE)
         {
-            u8 ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
             for (j = 0; j < MAX_MON_MOVES; j++)
             {
                 u16 move = GetMonData(mon, MON_DATA_MOVE1 + j);
-                max = CalculatePPWithBonus(move, ppBonuses, j);
+                max = CalculatePP(move, j);
                 curr = GetMonData(mon, MON_DATA_PP1 + j);
                 if (curr < max)
                 {

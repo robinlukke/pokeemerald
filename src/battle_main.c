@@ -4338,10 +4338,7 @@ static void HandleTurnActionSelectionState(void)
                         {
                             moveInfo.moves[i] = gBattleMons[gActiveBattler].moves[i];
                             moveInfo.currentPp[i] = gBattleMons[gActiveBattler].pp[i];
-                            moveInfo.maxPp[i] = CalculatePPWithBonus(
-                                                            gBattleMons[gActiveBattler].moves[i],
-                                                            gBattleMons[gActiveBattler].ppBonuses,
-                                                            i);
+                            moveInfo.maxPp[i] = CalculatePP(gBattleMons[gActiveBattler].moves[i], i);
                         }
 
                         BtlController_EmitChooseMove(B_COMM_TO_CONTROLLER, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0, FALSE, &moveInfo);

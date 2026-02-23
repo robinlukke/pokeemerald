@@ -774,12 +774,6 @@ void ItemUseOutOfBattle_PPRecovery(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
-void ItemUseOutOfBattle_PPUp(u8 taskId)
-{
-    gItemUseCB = ItemUseCB_PPUp;
-    SetUpItemUseCallback(taskId);
-}
-
 void ItemUseOutOfBattle_RareCandy(u8 taskId)
 {
     gItemUseCB = ItemUseCB_RareCandy;
@@ -1072,11 +1066,6 @@ void ItemUseOutOfBattle_EnigmaBerry(u8 taskId)
     case ITEM_EFFECT_RAISE_LEVEL:
         gTasks[taskId].tEnigmaBerryType = ITEM_USE_PARTY_MENU;
         ItemUseOutOfBattle_RareCandy(taskId);
-        break;
-    case ITEM_EFFECT_PP_UP:
-    case ITEM_EFFECT_PP_MAX:
-        gTasks[taskId].tEnigmaBerryType = ITEM_USE_PARTY_MENU;
-        ItemUseOutOfBattle_PPUp(taskId);
         break;
     case ITEM_EFFECT_HEAL_PP:
         gTasks[taskId].tEnigmaBerryType = ITEM_USE_PARTY_MENU;

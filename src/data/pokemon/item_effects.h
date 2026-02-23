@@ -205,21 +205,10 @@ const u8 gItemEffect_RareCandy[10] = {
     VITAMIN_FRIENDSHIP_CHANGE(7),
 };
 
-const u8 gItemEffect_PPUp[9] = {
-    [4] = ITEM4_PP_UP,
-    [5] = ITEM5_FRIENDSHIP_ALL,
-    VITAMIN_FRIENDSHIP_CHANGE(6),
-};
-
 const u8 gItemEffect_Zinc[10] = {
     [5] = ITEM5_EV_SPDEF | ITEM5_FRIENDSHIP_ALL,
     [6] = ITEM6_ADD_EV,
     VITAMIN_FRIENDSHIP_CHANGE(7),
-};
-
-const u8 gItemEffect_PPMax[9] = {
-    [5] = ITEM5_PP_MAX | ITEM5_FRIENDSHIP_ALL,
-    VITAMIN_FRIENDSHIP_CHANGE(6),
 };
 
 #define STAT_BOOST_FRIENDSHIP_CHANGE      \
@@ -445,9 +434,7 @@ const u8 *const gItemEffectTable[] =
     [ITEM_CARBOS - ITEM_POTION]        = gItemEffect_Carbos,
     [ITEM_CALCIUM - ITEM_POTION]       = gItemEffect_Calcium,
     [ITEM_RARE_CANDY - ITEM_POTION]    = gItemEffect_RareCandy,
-    [ITEM_PP_UP - ITEM_POTION]         = gItemEffect_PPUp,
     [ITEM_ZINC - ITEM_POTION]          = gItemEffect_Zinc,
-    [ITEM_PP_MAX - ITEM_POTION]        = gItemEffect_PPMax,
     [ITEM_GUARD_SPEC - ITEM_POTION]    = gItemEffect_GuardSpec,
     [ITEM_DIRE_HIT - ITEM_POTION]      = gItemEffect_DireHit,
     [ITEM_X_ATTACK - ITEM_POTION]      = gItemEffect_XAttack,

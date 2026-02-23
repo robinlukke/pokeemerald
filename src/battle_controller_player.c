@@ -667,9 +667,7 @@ static u32 UNUSED HandleMoveInputUnused(void)
 
 static void HandleMoveSwitching(void)
 {
-    u8 perMovePPBonuses[MAX_MON_MOVES];
     struct ChooseMoveStruct moveStruct;
-    u8 totalPPBonuses;
 
     if (JOY_NEW(A_BUTTON | SELECT_BUTTON))
     {
@@ -702,19 +700,6 @@ static void HandleMoveSwitching(void)
             MoveSelectionDisplayMoveNames();
 
             for (i = 0; i < MAX_MON_MOVES; i++)
-                perMovePPBonuses[i] = (gBattleMons[gActiveBattler].ppBonuses & (3 << (i * 2))) >> (i * 2);
-
-            totalPPBonuses = perMovePPBonuses[gMoveSelectionCursor[gActiveBattler]];
-            perMovePPBonuses[gMoveSelectionCursor[gActiveBattler]] = perMovePPBonuses[gMultiUsePlayerCursor];
-            perMovePPBonuses[gMultiUsePlayerCursor] = totalPPBonuses;
-
-            totalPPBonuses = 0;
-            for (i = 0; i < MAX_MON_MOVES; i++)
-                totalPPBonuses |= perMovePPBonuses[i] << (i * 2);
-
-            gBattleMons[gActiveBattler].ppBonuses = totalPPBonuses;
-
-            for (i = 0; i < MAX_MON_MOVES; i++)
             {
                 gBattleMons[gActiveBattler].moves[i] = moveInfo->moves[i];
                 gBattleMons[gActiveBattler].pp[i] = moveInfo->currentPp[i];
@@ -728,10 +713,6 @@ static void HandleMoveSwitching(void)
                     moveStruct.currentPp[i] = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_PP1 + i);
                 }
 
-                totalPPBonuses = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_PP_BONUSES);
-                for (i = 0; i < MAX_MON_MOVES; i++)
-                    perMovePPBonuses[i] = (totalPPBonuses & (3 << (i * 2))) >> (i * 2);
-
                 i = moveStruct.moves[gMoveSelectionCursor[gActiveBattler]];
                 moveStruct.moves[gMoveSelectionCursor[gActiveBattler]] = moveStruct.moves[gMultiUsePlayerCursor];
                 moveStruct.moves[gMultiUsePlayerCursor] = i;
@@ -740,21 +721,11 @@ static void HandleMoveSwitching(void)
                 moveStruct.currentPp[gMoveSelectionCursor[gActiveBattler]] = moveStruct.currentPp[gMultiUsePlayerCursor];
                 moveStruct.currentPp[gMultiUsePlayerCursor] = i;
 
-                totalPPBonuses = perMovePPBonuses[gMoveSelectionCursor[gActiveBattler]];
-                perMovePPBonuses[gMoveSelectionCursor[gActiveBattler]] = perMovePPBonuses[gMultiUsePlayerCursor];
-                perMovePPBonuses[gMultiUsePlayerCursor] = totalPPBonuses;
-
-                totalPPBonuses = 0;
-                for (i = 0; i < MAX_MON_MOVES; i++)
-                    totalPPBonuses |= perMovePPBonuses[i] << (i * 2);
-
                 for (i = 0; i < MAX_MON_MOVES; i++)
                 {
                     SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_MOVE1 + i, &moveStruct.moves[i]);
                     SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_PP1 + i, &moveStruct.currentPp[i]);
                 }
-
-                SetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_PP_BONUSES, &totalPPBonuses);
             }
         }
 
@@ -1683,7 +1654,6 @@ static u32 CopyPlayerMonData(u8 monId, u8 *dst)
             battleMon.moves[size] = GetMonData(&gPlayerParty[monId], MON_DATA_MOVE1 + size);
             battleMon.pp[size] = GetMonData(&gPlayerParty[monId], MON_DATA_PP1 + size);
         }
-        battleMon.ppBonuses = GetMonData(&gPlayerParty[monId], MON_DATA_PP_BONUSES);
         battleMon.friendship = GetMonData(&gPlayerParty[monId], MON_DATA_FRIENDSHIP);
         battleMon.experience = GetMonData(&gPlayerParty[monId], MON_DATA_EXP);
         battleMon.hpIV = GetMonData(&gPlayerParty[monId], MON_DATA_HP_IV);
@@ -1730,7 +1700,6 @@ static u32 CopyPlayerMonData(u8 monId, u8 *dst)
             moveData.moves[size] = GetMonData(&gPlayerParty[monId], MON_DATA_MOVE1 + size);
             moveData.pp[size] = GetMonData(&gPlayerParty[monId], MON_DATA_PP1 + size);
         }
-        moveData.ppBonuses = GetMonData(&gPlayerParty[monId], MON_DATA_PP_BONUSES);
         src = (u8 *)(&moveData);
         for (size = 0; size < sizeof(moveData); size++)
             dst[size] = src[size];
@@ -1747,7 +1716,6 @@ static u32 CopyPlayerMonData(u8 monId, u8 *dst)
     case REQUEST_PP_DATA_BATTLE:
         for (size = 0; size < MAX_MON_MOVES; size++)
             dst[size] = GetMonData(&gPlayerParty[monId], MON_DATA_PP1 + size);
-        dst[size] = GetMonData(&gPlayerParty[monId], MON_DATA_PP_BONUSES);
         size++;
         break;
     case REQUEST_PPMOVE1_BATTLE:
@@ -2024,7 +1992,6 @@ static void SetPlayerMonData(u8 monId)
                 SetMonData(&gPlayerParty[monId], MON_DATA_MOVE1 + i, &battlePokemon->moves[i]);
                 SetMonData(&gPlayerParty[monId], MON_DATA_PP1 + i, &battlePokemon->pp[i]);
             }
-            SetMonData(&gPlayerParty[monId], MON_DATA_PP_BONUSES, &battlePokemon->ppBonuses);
             SetMonData(&gPlayerParty[monId], MON_DATA_FRIENDSHIP, &battlePokemon->friendship);
             SetMonData(&gPlayerParty[monId], MON_DATA_EXP, &battlePokemon->experience);
 			iv = 31;
@@ -2064,7 +2031,6 @@ static void SetPlayerMonData(u8 monId)
             SetMonData(&gPlayerParty[monId], MON_DATA_MOVE1 + i, &moveData->moves[i]);
             SetMonData(&gPlayerParty[monId], MON_DATA_PP1 + i, &moveData->pp[i]);
         }
-        SetMonData(&gPlayerParty[monId], MON_DATA_PP_BONUSES, &moveData->ppBonuses);
         break;
     case REQUEST_MOVE1_BATTLE:
     case REQUEST_MOVE2_BATTLE:
@@ -2077,7 +2043,6 @@ static void SetPlayerMonData(u8 monId)
         SetMonData(&gPlayerParty[monId], MON_DATA_PP2, &gBattleBufferA[gActiveBattler][4]);
         SetMonData(&gPlayerParty[monId], MON_DATA_PP3, &gBattleBufferA[gActiveBattler][5]);
         SetMonData(&gPlayerParty[monId], MON_DATA_PP4, &gBattleBufferA[gActiveBattler][6]);
-        SetMonData(&gPlayerParty[monId], MON_DATA_PP_BONUSES, &gBattleBufferA[gActiveBattler][7]);
         break;
     case REQUEST_PPMOVE1_BATTLE:
     case REQUEST_PPMOVE2_BATTLE:

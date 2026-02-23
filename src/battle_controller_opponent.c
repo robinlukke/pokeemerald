@@ -585,7 +585,6 @@ static u32 GetOpponentMonData(u8 monId, u8 *dst)
             battleMon.moves[size] = GetMonData(&gEnemyParty[monId], MON_DATA_MOVE1 + size);
             battleMon.pp[size] = GetMonData(&gEnemyParty[monId], MON_DATA_PP1 + size);
         }
-        battleMon.ppBonuses = GetMonData(&gEnemyParty[monId], MON_DATA_PP_BONUSES);
         battleMon.friendship = GetMonData(&gEnemyParty[monId], MON_DATA_FRIENDSHIP);
         battleMon.experience = GetMonData(&gEnemyParty[monId], MON_DATA_EXP);
         battleMon.hpIV = GetMonData(&gEnemyParty[monId], MON_DATA_HP_IV);
@@ -632,7 +631,6 @@ static u32 GetOpponentMonData(u8 monId, u8 *dst)
             moveData.moves[size] = GetMonData(&gEnemyParty[monId], MON_DATA_MOVE1 + size);
             moveData.pp[size] = GetMonData(&gEnemyParty[monId], MON_DATA_PP1 + size);
         }
-        moveData.ppBonuses = GetMonData(&gEnemyParty[monId], MON_DATA_PP_BONUSES);
         src = (u8 *)(&moveData);
         for (size = 0; size < sizeof(moveData); size++)
             dst[size] = src[size];
@@ -649,7 +647,6 @@ static u32 GetOpponentMonData(u8 monId, u8 *dst)
     case REQUEST_PP_DATA_BATTLE:
         for (size = 0; size < MAX_MON_MOVES; size++)
             dst[size] = GetMonData(&gEnemyParty[monId], MON_DATA_PP1 + size);
-        dst[size] = GetMonData(&gEnemyParty[monId], MON_DATA_PP_BONUSES);
         size++;
         break;
     case REQUEST_PPMOVE1_BATTLE:
@@ -926,7 +923,6 @@ static void SetOpponentMonData(u8 monId)
                 SetMonData(&gEnemyParty[monId], MON_DATA_MOVE1 + i, &battlePokemon->moves[i]);
                 SetMonData(&gEnemyParty[monId], MON_DATA_PP1 + i, &battlePokemon->pp[i]);
             }
-            SetMonData(&gEnemyParty[monId], MON_DATA_PP_BONUSES, &battlePokemon->ppBonuses);
             SetMonData(&gEnemyParty[monId], MON_DATA_FRIENDSHIP, &battlePokemon->friendship);
             SetMonData(&gEnemyParty[monId], MON_DATA_EXP, &battlePokemon->experience);
 			iv = 31;
@@ -966,7 +962,6 @@ static void SetOpponentMonData(u8 monId)
             SetMonData(&gEnemyParty[monId], MON_DATA_MOVE1 + i, &moveData->moves[i]);
             SetMonData(&gEnemyParty[monId], MON_DATA_PP1 + i, &moveData->pp[i]);
         }
-        SetMonData(&gEnemyParty[monId], MON_DATA_PP_BONUSES, &moveData->ppBonuses);
         break;
     case REQUEST_MOVE1_BATTLE:
     case REQUEST_MOVE2_BATTLE:
@@ -979,7 +974,6 @@ static void SetOpponentMonData(u8 monId)
         SetMonData(&gEnemyParty[monId], MON_DATA_PP2, &gBattleBufferA[gActiveBattler][4]);
         SetMonData(&gEnemyParty[monId], MON_DATA_PP3, &gBattleBufferA[gActiveBattler][5]);
         SetMonData(&gEnemyParty[monId], MON_DATA_PP4, &gBattleBufferA[gActiveBattler][6]);
-        SetMonData(&gEnemyParty[monId], MON_DATA_PP_BONUSES, &gBattleBufferA[gActiveBattler][7]);
         break;
     case REQUEST_PPMOVE1_BATTLE:
     case REQUEST_PPMOVE2_BATTLE:
