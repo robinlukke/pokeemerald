@@ -65,7 +65,7 @@ enum {
 #define PSS_LABEL_WINDOW_PROMPT_CANCEL 4
 #define PSS_LABEL_WINDOW_PROMPT_INFO 5
 #define PSS_LABEL_WINDOW_PROMPT_SWITCH 6
-#define PSS_LABEL_WINDOW_UNUSED1 7
+#define PSS_LABEL_WINDOW_SPLIT 7
 
 // Info screen
 #define PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL 8
@@ -310,6 +310,9 @@ static void DestroyMoveSelectorSprites(u8);
 static void SetMainMoveSelectorColor(u8);
 static void KeepMoveSelectorVisible(u8);
 static void SummaryScreen_DestroyAnimDelayTask(void);
+static void DisplaySplit(u16);
+static const u16 sSplitIcon_Pal[] = INCBIN_U16("graphics/summary_screen/split_icons.gbapal");
+static const u8 sSplitIcon_Gfx[] = INCBIN_U8("graphics/summary_screen/split_icons.4bpp");
 static void BufferStat(u8 *dst, s8 natureMod, u32 stat, u32 strId, u32 n);
 static void BufferIvOrEvStats(u8 mode);
 
@@ -450,13 +453,13 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .paletteNum = 7,
         .baseBlock = 121,
     },
-    [PSS_LABEL_WINDOW_UNUSED1] = {
+    [PSS_LABEL_WINDOW_SPLIT] = {
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 4,
-        .width = 0,
+        .tilemapLeft = 37,
+        .tilemapTop = 15,
+        .width = 2,
         .height = 2,
-        .paletteNum = 6,
+        .paletteNum = 10,
         .baseBlock = 137,
     },
     [PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL] = {
@@ -2469,6 +2472,7 @@ static void Task_ShowPowerAccWindow(u8 taskId)
         {
             if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES)
                 PutWindowTilemap(PSS_LABEL_WINDOW_MOVES_POWER_ACC);
+				DisplaySplit(sMonSummaryScreen->summary.moves[sMonSummaryScreen->firstMoveIndex]);
         }
         else
         {
@@ -3753,6 +3757,7 @@ static void PrintMoveDetails(u16 move)
         {
             PrintMovePowerAndAccuracy(move);
             PrintTextOnWindow(windowId, gMoveDescriptionPointers[move - 1], 6, 1, 0, 0);
+			DisplaySplit(move);
         }
         else
         {
@@ -4285,3 +4290,10 @@ static void BufferStat(u8 *dst, s8 natureMod, u32 stat, u32 strId, u32 n)
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(strId, dst);
 }
 
+static void DisplaySplit(u16 move)
+{
+    LoadPalette(sSplitIcon_Pal, 10 * 0x10, 0x20);
+    BlitBitmapToWindow(PSS_LABEL_WINDOW_SPLIT, sSplitIcon_Gfx + 0x80 * gBattleMoves[move].split, 0, 0, 16, 16);
+    PutWindowTilemap(PSS_LABEL_WINDOW_SPLIT);
+    CopyWindowToVram(PSS_LABEL_WINDOW_SPLIT, 3);
+}
