@@ -907,6 +907,11 @@ u8 GetItemImportance(u16 itemId)
     return gItems[SanitizeItemId(itemId)].importance;
 }
 
+u8 canBeHeld(u16 itemId)
+{
+    return gItems[SanitizeItemId(itemId)].canBeHeld;
+}
+
 // Unused
 u8 GetItemRegistrability(u16 itemId)
 {
@@ -946,9 +951,4 @@ u8 GetItemSecondaryId(u16 itemId)
 void GetItemHoldEffectParam_Script()
 {
     VarSet(VAR_RESULT, GetItemHoldEffectParam(VarGet(VAR_0x8004)));
-}
-
-u8 CanItemBeHeld(u16 itemId)
-{
-    return gItems[SanitizeItemId(itemId)].canBeHeld;
 }

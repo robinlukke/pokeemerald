@@ -7,7 +7,7 @@
 #define AILMENT_PSN   1
 #define AILMENT_PRZ   2
 #define AILMENT_SLP   3
-#define AILMENT_FRZ   4
+#define AILMENT_FRS   4
 #define AILMENT_BRN   5
 #define AILMENT_PKRS  6
 #define AILMENT_FNT   7

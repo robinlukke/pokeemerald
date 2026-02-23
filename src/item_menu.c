@@ -295,19 +295,17 @@ static const u8 sContextMenuItems_KeyItemsPocket[] = {
 };
 
 static const u8 sContextMenuItems_BallsPocket[] = {
-    ACTION_GIVE,        ACTION_DUMMY,
     ACTION_TOSS,        ACTION_CANCEL
 };
 
 static const u8 sContextMenuItems_TmHmPocket[] = {
-    ACTION_USE,         ACTION_GIVE,
-    ACTION_DUMMY,       ACTION_CANCEL
+    ACTION_USE,         ACTION_CANCEL
 };
 
 static const u8 sContextMenuItems_BerriesPocket[] = {
     ACTION_USE,         ACTION_GIVE,
-    ACTION_CHECK_TAG,	ACTION_DUMMY,
-    ACTION_TOSS,		ACTION_CANCEL
+    ACTION_TOSS,		ACTION_CANCEL,
+    ACTION_CHECK_TAG,	ACTION_DUMMY
 };
 
 static const u8 sContextMenuItems_BattleUse[] = {
@@ -1926,26 +1924,12 @@ static void ItemMenu_Give(u8 taskId)
     {
         DisplayItemMessage(taskId, FONT_NORMAL, gText_CantWriteMail, HandleErrorMessage);
     }
-    else if (!GetItemImportance(gSpecialVar_ItemId))
-    {
-        if (CalculatePlayerPartyCount() == 0)
-        {
-            PrintThereIsNoPokemon(taskId);
-        }
-        else
-        {
-            gBagMenu->newScreenCallback = CB2_ChooseMonToGiveItem;
-            Task_FadeAndCloseBagMenu(taskId);
-        }
-    }
-	else if (!(CanItemBeHeld(gSpecialVar_ItemId)))
+	else if (canBeHeld(gSpecialVar_ItemId) == TRUE)
 		{
-        PrintItemCantBeHeld(taskId);
+		gBagMenu->newScreenCallback = CB2_ChooseMonToGiveItem;
+		Task_FadeAndCloseBagMenu(taskId);
 		}
-    else
-    {
-        PrintItemCantBeHeld(taskId);
-    }
+    else PrintItemCantBeHeld(taskId);
 }
 
 static void PrintThereIsNoPokemon(u8 taskId)
@@ -1989,6 +1973,8 @@ static void ItemMenu_Cancel(u8 taskId)
 
 static void ItemMenu_UseInBattle(u8 taskId)
 {
+	//if VarSet(VAR_ALREADY_USED_ITEM_BATTLE, 1)
+	
     if (GetItemBattleFunc(gSpecialVar_ItemId))
     {
         RemoveContextWindow();
@@ -2013,7 +1999,7 @@ static void Task_ItemContext_GiveToParty(u8 taskId)
         StringExpandPlaceholders(gStringVar4, gText_Var1CantBeHeldHere);
         DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, HandleErrorMessage);
     }
-    else if (gBagPosition.pocket != KEYITEMS_POCKET && !GetItemImportance(gSpecialVar_ItemId))
+    else if (canBeHeld(gSpecialVar_ItemId) == TRUE)
     {
         Task_FadeAndCloseBagMenu(taskId);
     }
@@ -2028,7 +2014,7 @@ static void Task_ItemContext_GiveToPC(u8 taskId)
 {
     if (ItemIsMail(gSpecialVar_ItemId) == TRUE)
         DisplayItemMessage(taskId, FONT_NORMAL, gText_CantWriteMail, HandleErrorMessage);
-    else if (gBagPosition.pocket != KEYITEMS_POCKET && !GetItemImportance(gSpecialVar_ItemId))
+    else if (canBeHeld(gSpecialVar_ItemId) == TRUE)
         gTasks[taskId].func = Task_FadeAndCloseBagMenu;
     else
         PrintItemCantBeHeld(taskId);

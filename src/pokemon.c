@@ -2432,6 +2432,7 @@ void CreateBattleTowerMon(struct Pokemon *mon, struct BattleTowerPokemon *src)
     u8 nickname[max(32, POKEMON_NAME_BUFFER_SIZE)];
     u8 language;
     u8 value;
+	u8 iv;
 
     CreateMon(mon, src->species, src->level, 0, TRUE, src->personality, OT_ID_PRESET, src->otId);
 
@@ -2464,18 +2465,19 @@ void CreateBattleTowerMon(struct Pokemon *mon, struct BattleTowerPokemon *src)
     SetMonData(mon, MON_DATA_SPDEF_EV, &src->spDefenseEV);
     value = src->abilityNum;
     SetMonData(mon, MON_DATA_ABILITY_NUM, &value);
-    value = src->hpIV;
-    SetMonData(mon, MON_DATA_HP_IV, &value);
-    value = src->attackIV;
-    SetMonData(mon, MON_DATA_ATK_IV, &value);
-    value = src->defenseIV;
-    SetMonData(mon, MON_DATA_DEF_IV, &value);
-    value = src->speedIV;
-    SetMonData(mon, MON_DATA_SPEED_IV, &value);
-    value = src->spAttackIV;
-    SetMonData(mon, MON_DATA_SPATK_IV, &value);
-    value = src->spDefenseIV;
-    SetMonData(mon, MON_DATA_SPDEF_IV, &value);
+	iv = 31;
+    //value = src->hpIV;
+    SetMonData(mon, MON_DATA_HP_IV, &iv);
+    //value = src->attackIV;
+    SetMonData(mon, MON_DATA_ATK_IV, &iv);
+    //value = src->defenseIV;
+    SetMonData(mon, MON_DATA_DEF_IV, &iv);
+    //value = src->speedIV;
+    SetMonData(mon, MON_DATA_SPEED_IV, &iv);
+    //value = src->spAttackIV;
+    SetMonData(mon, MON_DATA_SPATK_IV, &iv);
+    //value = src->spDefenseIV;
+    SetMonData(mon, MON_DATA_SPDEF_IV, &iv);
     MonRestorePP(mon);
     CalculateMonStats(mon);
 }
@@ -2487,6 +2489,7 @@ void CreateBattleTowerMon_HandleLevel(struct Pokemon *mon, struct BattleTowerPok
     u8 level;
     u8 language;
     u8 value;
+	u8 iv;
 
     if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_50)
         level = GetFrontierEnemyMonLevel(gSaveBlock2Ptr->frontier.lvlMode);
@@ -2526,18 +2529,19 @@ void CreateBattleTowerMon_HandleLevel(struct Pokemon *mon, struct BattleTowerPok
     SetMonData(mon, MON_DATA_SPDEF_EV, &src->spDefenseEV);
     value = src->abilityNum;
     SetMonData(mon, MON_DATA_ABILITY_NUM, &value);
-    value = src->hpIV;
-    SetMonData(mon, MON_DATA_HP_IV, &value);
-    value = src->attackIV;
-    SetMonData(mon, MON_DATA_ATK_IV, &value);
-    value = src->defenseIV;
-    SetMonData(mon, MON_DATA_DEF_IV, &value);
-    value = src->speedIV;
-    SetMonData(mon, MON_DATA_SPEED_IV, &value);
-    value = src->spAttackIV;
-    SetMonData(mon, MON_DATA_SPATK_IV, &value);
-    value = src->spDefenseIV;
-    SetMonData(mon, MON_DATA_SPDEF_IV, &value);
+	iv = 31;
+    //value = src->hpIV;
+    SetMonData(mon, MON_DATA_HP_IV, &iv);
+    //value = src->attackIV;
+    SetMonData(mon, MON_DATA_ATK_IV, &iv);
+    //value = src->defenseIV;
+    SetMonData(mon, MON_DATA_DEF_IV, &iv);
+    //value = src->speedIV;
+    SetMonData(mon, MON_DATA_SPEED_IV, &iv);
+    //value = src->spAttackIV;
+    SetMonData(mon, MON_DATA_SPATK_IV, &iv);
+    //value = src->spDefenseIV;
+    SetMonData(mon, MON_DATA_SPDEF_IV, &iv);
     MonRestorePP(mon);
     CalculateMonStats(mon);
 }
@@ -2838,7 +2842,7 @@ static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
 #define CALC_STAT(base, iv, ev, statIndex, field)               \
 {                                                               \
     u8 baseStat = gSpeciesInfo[species].base;                   \
-    s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5; \
+    s32 n = (((2 * baseStat + iv) * level) / 100) + 5 + ev / 8; \
     u8 nature = GetNature(mon);                                 \
     n = ModifyStatByNature(nature, n, statIndex);               \
     SetMonData(mon, field, &n);                                 \
@@ -2872,8 +2876,8 @@ void CalculateMonStats(struct Pokemon *mon)
     }
     else
     {
-        s32 n = 2 * gSpeciesInfo[species].baseHP + hpIV;
-        newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
+        s32 n = 2 * gSpeciesInfo[species].baseHP + 31;
+        newMaxHP = (((n) * level) / 100) + level + 10 + hpEV / 8;
     }
 
     gBattleScripting.levelUpHP = newMaxHP - oldMaxHP;
@@ -2882,11 +2886,11 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
 
-    CALC_STAT(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
-    CALC_STAT(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
-    CALC_STAT(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
-    CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
-    CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+    CALC_STAT(baseAttack, 31, attackEV, STAT_ATK, MON_DATA_ATK)
+    CALC_STAT(baseDefense, 31, defenseEV, STAT_DEF, MON_DATA_DEF)
+    CALC_STAT(baseSpeed, 31, speedEV, STAT_SPEED, MON_DATA_SPEED)
+    CALC_STAT(baseSpAttack, 31, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
+    CALC_STAT(baseSpDefense, 31, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
 
     if (species == SPECIES_SHEDINJA)
     {
@@ -2903,12 +2907,9 @@ void CalculateMonStats(struct Pokemon *mon)
         }
         else if (currentHP != 0)
         {
-            // BUG: currentHP is unintentionally able to become <= 0 after the instruction below. This causes the pomeg berry glitch.
             currentHP += newMaxHP - oldMaxHP;
-            #ifdef BUGFIX
             if (currentHP <= 0)
                 currentHP = 1;
-            #endif
         }
         else
         {
@@ -3295,6 +3296,10 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         // Burn cuts attack in half
         if ((attacker->status1 & STATUS1_BURN) && attacker->ability != ABILITY_GUTS)
             damage /= 2;
+		
+		// Yawn cuts attack in half
+		//if (attacker->sideStatus & STATUS3_YAWN)
+        //    damage /= 100;
 
         // Apply Reflect
         if ((sideStatus & SIDE_STATUS_REFLECT) && gCritMultiplier == 1)
@@ -3346,6 +3351,14 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 
         damage = (damage / damageHelper);
         damage /= 50;
+
+        // Frostbite cuts special attack in half
+        if ((attacker->status1 & STATUS1_FROSTBITE) && attacker->ability != ABILITY_GUTS)
+            damage /= 2;
+
+		// Yawn cuts special attack in half
+		if (attacker->status1 & STATUS3_YAWN)
+            damage /= 2;
 
         // Apply Lightscreen
         if ((sideStatus & SIDE_STATUS_LIGHTSCREEN) && gCritMultiplier == 1)
@@ -4960,7 +4973,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                 retVal = FALSE;
             if ((itemEffect[i] & ITEM3_BURN) && HealStatusConditions(mon, partyIndex, STATUS1_BURN, battler) == 0)
                 retVal = FALSE;
-            if ((itemEffect[i] & ITEM3_FREEZE) && HealStatusConditions(mon, partyIndex, STATUS1_FREEZE, battler) == 0)
+            if ((itemEffect[i] & ITEM3_FREEZE) && HealStatusConditions(mon, partyIndex, STATUS1_FROSTBITE, battler) == 0)
                 retVal = FALSE;
             if ((itemEffect[i] & ITEM3_PARALYSIS) && HealStatusConditions(mon, partyIndex, STATUS1_PARALYSIS, battler) == 0)
                 retVal = FALSE;

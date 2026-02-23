@@ -16,6 +16,7 @@ struct Item
     u8 holdEffectParam;
     const u8 *description;
     u8 importance;
+	u8 canBeHeld;
     bool8 registrability; // unused
     u8 pocket;
     u8 type;
@@ -23,7 +24,6 @@ struct Item
     u8 battleUsage;
     ItemUseFunc battleUseFunc;
     u8 secondaryId;
-	u8 canBeHeld;
 };
 
 struct BagPocket
@@ -70,6 +70,7 @@ u8 GetItemHoldEffect(u16 itemId);
 u8 GetItemHoldEffectParam(u16 itemId);
 const u8 *GetItemDescription(u16 itemId);
 u8 GetItemImportance(u16 itemId);
+u8 canBeHeld(u16 itemId);
 u8 GetItemPocket(u16 itemId);
 u8 GetItemType(u16 itemId);
 ItemUseFunc GetItemFieldFunc(u16 itemId);
@@ -77,7 +78,6 @@ u8 GetItemBattleUsage(u16 itemId);
 ItemUseFunc GetItemBattleFunc(u16 itemId);
 u8 GetItemSecondaryId(u16 itemId);
 void GetItemHoldEffectParam_Script();
-u8 CanItemBeHeld(u16 itemId);
 
 /* Expands to:
  * enum

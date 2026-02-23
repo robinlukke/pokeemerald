@@ -1911,8 +1911,8 @@ u8 GetAilmentFromStatus(u32 status)
         return AILMENT_PRZ;
     if (status & STATUS1_SLEEP)
         return AILMENT_SLP;
-    if (status & STATUS1_FREEZE)
-        return AILMENT_FRZ;
+    if (status & STATUS1_FROSTBITE)
+        return AILMENT_FRS;
     if (status & STATUS1_BURN)
         return AILMENT_BRN;
     return AILMENT_NONE;

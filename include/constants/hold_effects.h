@@ -7,7 +7,7 @@
 #define HOLD_EFFECT_CURE_SLP        3
 #define HOLD_EFFECT_CURE_PSN        4
 #define HOLD_EFFECT_CURE_BRN        5
-#define HOLD_EFFECT_CURE_FRZ        6
+#define HOLD_EFFECT_CURE_FRS        6
 #define HOLD_EFFECT_RESTORE_PP      7
 #define HOLD_EFFECT_CURE_CONFUSION  8
 #define HOLD_EFFECT_CURE_STATUS     9

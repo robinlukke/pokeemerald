@@ -423,8 +423,8 @@ void InitAndLaunchChosenStatusAnimation(bool8 isStatus2, u32 status)
     gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].statusAnimActive = 1;
     if (!isStatus2)
     {
-        if (status == STATUS1_FREEZE)
-            LaunchStatusAnimation(gActiveBattler, B_ANIM_STATUS_FRZ);
+        if (status == STATUS1_FROSTBITE)
+            LaunchStatusAnimation(gActiveBattler, B_ANIM_STATUS_FRS);
         else if (status == STATUS1_POISON || status & STATUS1_TOXIC_POISON)
             LaunchStatusAnimation(gActiveBattler, B_ANIM_STATUS_PSN);
         else if (status == STATUS1_BURN)

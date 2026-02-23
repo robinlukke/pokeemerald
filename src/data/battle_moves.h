@@ -660,7 +660,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SING] =
     {
-        .effect = EFFECT_SLEEP,
+        .effect = EFFECT_YAWN,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 75,
@@ -1108,7 +1108,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SLEEP_POWDER] =
     {
-        .effect = EFFECT_SLEEP,
+        .effect = EFFECT_YAWN,
         .power = 0,
         .type = TYPE_GRASS,
         .accuracy = 75,
@@ -1332,7 +1332,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_HYPNOSIS] =
     {
-        .effect = EFFECT_SLEEP,
+        .effect = EFFECT_YAWN,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 75,
@@ -1990,7 +1990,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_LOVELY_KISS] =
     {
-        .effect = EFFECT_SLEEP,
+        .effect = EFFECT_YAWN,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 75,
@@ -2060,7 +2060,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SPORE] =
     {
-        .effect = EFFECT_SLEEP,
+        .effect = EFFECT_YAWN,
         .power = 0,
         .type = TYPE_GRASS,
         .accuracy = 100,
@@ -4482,7 +4482,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_GRASS_WHISTLE] =
     {
-        .effect = EFFECT_SLEEP,
+        .effect = EFFECT_YAWN,
         .power = 0,
         .type = TYPE_GRASS,
         .accuracy = 75,

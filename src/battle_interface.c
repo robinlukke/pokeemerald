@@ -68,7 +68,7 @@ enum
     HEALTHBOX_GFX_STATUS_SLP_BATTLER0,  //status slp
     HEALTHBOX_GFX_28,
     HEALTHBOX_GFX_29,
-    HEALTHBOX_GFX_STATUS_FRZ_BATTLER0,  //status frz
+    HEALTHBOX_GFX_STATUS_FRS_BATTLER0,  //status frz
     HEALTHBOX_GFX_31,
     HEALTHBOX_GFX_32,
     HEALTHBOX_GFX_STATUS_BRN_BATTLER0,  //status brn
@@ -118,7 +118,7 @@ enum
     HEALTHBOX_GFX_STATUS_SLP_BATTLER1, //status2 "SLP"
     HEALTHBOX_GFX_78,
     HEALTHBOX_GFX_79,
-    HEALTHBOX_GFX_STATUS_FRZ_BATTLER1, //status2 "FRZ"
+    HEALTHBOX_GFX_STATUS_FRS_BATTLER1, //status2 "FRZ"
     HEALTHBOX_GFX_81,
     HEALTHBOX_GFX_82,
     HEALTHBOX_GFX_STATUS_BRN_BATTLER1, //status2 "BRN"
@@ -133,7 +133,7 @@ enum
     HEALTHBOX_GFX_STATUS_SLP_BATTLER2, //status3 "SLP"
     HEALTHBOX_GFX_93,
     HEALTHBOX_GFX_94,
-    HEALTHBOX_GFX_STATUS_FRZ_BATTLER2, //status3 "FRZ"
+    HEALTHBOX_GFX_STATUS_FRS_BATTLER2, //status3 "FRZ"
     HEALTHBOX_GFX_96,
     HEALTHBOX_GFX_97,
     HEALTHBOX_GFX_STATUS_BRN_BATTLER2, //status3 "BRN"
@@ -148,7 +148,7 @@ enum
     HEALTHBOX_GFX_STATUS_SLP_BATTLER3, //status4 "SLP"
     HEALTHBOX_GFX_108,
     HEALTHBOX_GFX_109,
-    HEALTHBOX_GFX_STATUS_FRZ_BATTLER3, //status4 "FRZ"
+    HEALTHBOX_GFX_STATUS_FRS_BATTLER3, //status4 "FRZ"
     HEALTHBOX_GFX_111,
     HEALTHBOX_GFX_112,
     HEALTHBOX_GFX_STATUS_BRN_BATTLER3, //status4 "BRN"
@@ -744,7 +744,7 @@ enum
     PAL_STATUS_PSN,
     PAL_STATUS_PAR,
     PAL_STATUS_SLP,
-    PAL_STATUS_FRZ,
+    PAL_STATUS_FRS,
     PAL_STATUS_BRN
 };
 
@@ -753,7 +753,7 @@ enum
     [PAL_STATUS_PSN] = RGB(24, 12, 24),
     [PAL_STATUS_PAR] = RGB(23, 23, 3),
     [PAL_STATUS_SLP] = RGB(20, 20, 17),
-    [PAL_STATUS_FRZ] = RGB(17, 22, 28),
+    [PAL_STATUS_FRS] = RGB(17, 22, 28),
     [PAL_STATUS_BRN] = RGB(28, 14, 10),
 }; */
 
@@ -2027,10 +2027,10 @@ static void UpdateStatusIconInHealthbox(u8 healthboxSpriteId)
         statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_BRN_BATTLER0, battler));
         statusPalId = PAL_STATUS_BRN;
     }
-    else if (status & STATUS1_FREEZE)
+    else if (status & STATUS1_FROSTBITE)
     {
-        statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_FRZ_BATTLER0, battler));
-        statusPalId = PAL_STATUS_FRZ;
+        statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_FRS_BATTLER0, battler));
+        statusPalId = PAL_STATUS_FRS;
     }
     else if (status & STATUS1_PARALYSIS)
     {
@@ -2104,15 +2104,15 @@ static u8 GetStatusIconForBattlerId(u8 statusElementId, u8 battler)
         else
             ret = HEALTHBOX_GFX_STATUS_SLP_BATTLER3;
         break;
-    case HEALTHBOX_GFX_STATUS_FRZ_BATTLER0:
+    case HEALTHBOX_GFX_STATUS_FRS_BATTLER0:
         if (battler == 0)
-            ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER0;
+            ret = HEALTHBOX_GFX_STATUS_FRS_BATTLER0;
         else if (battler == 1)
-            ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER1;
+            ret = HEALTHBOX_GFX_STATUS_FRS_BATTLER1;
         else if (battler == 2)
-            ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER2;
+            ret = HEALTHBOX_GFX_STATUS_FRS_BATTLER2;
         else
-            ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER3;
+            ret = HEALTHBOX_GFX_STATUS_FRS_BATTLER3;
         break;
     case HEALTHBOX_GFX_STATUS_BRN_BATTLER0:
         if (battler == 0)

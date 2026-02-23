@@ -394,7 +394,7 @@
 #define B_ANIM_STATUS_INFATUATION       3
 #define B_ANIM_STATUS_SLP               4
 #define B_ANIM_STATUS_PRZ               5
-#define B_ANIM_STATUS_FRZ               6
+#define B_ANIM_STATUS_FRS               6
 #define B_ANIM_STATUS_CURSED            7
 #define B_ANIM_STATUS_NIGHTMARE         8
 #define B_ANIM_STATUS_WRAPPED           9 // does not actually exist

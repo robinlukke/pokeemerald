@@ -176,7 +176,7 @@ u32 BattlePalace_TryEscapeStatus(u8 battler)
             gBattleCommunication[MULTIUSE_STATE]++;
             break;
         case 1:
-            if (gBattleMons[battler].status1 & STATUS1_FREEZE)
+            if (gBattleMons[battler].status1 & STATUS1_FROSTBITE)
             {
                 if (Random() % 5 != 0)
                 {
@@ -186,7 +186,7 @@ u32 BattlePalace_TryEscapeStatus(u8 battler)
                 else
                 {
                     // Unfreeze
-                    gBattleMons[battler].status1 &= ~(STATUS1_FREEZE);
+                    gBattleMons[battler].status1 &= ~(STATUS1_FROSTBITE);
                     BattleScriptPushCursor();
                     gBattlescriptCurrInstr = BattleScript_MoveUsedUnfroze;
                     gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_DEFROSTED;
