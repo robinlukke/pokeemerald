@@ -1181,7 +1181,7 @@ static void Cmd_accuracycheck(void)
              && (gBattleMoves[move].target == MOVE_TARGET_BOTH || gBattleMoves[move].target == MOVE_TARGET_FOES_AND_ALLY))
                 gBattleCommunication[MISS_TYPE] = B_MSG_AVOIDED_ATK;
             else
-                gBattleCommunication[MISS_TYPE] = B_MSG_MISSED;
+                gBattleCommunication[MISS_TYPE] = B_MSG_AVOIDED_ATK;
 
             CheckWonderGuardAndLevitate();
         }
@@ -3420,6 +3420,10 @@ static void Cmd_getexp(void)
                             i = STRINGID_ABOOSTED;
                         }
                     }
+					else if (holdEffect == HOLD_EFFECT_LUCKY_EGG)
+						{
+							i = STRINGID_ABOOSTED;
+						}
                     else
                     {
                         i = STRINGID_EMPTYSTRING4;
@@ -3439,6 +3443,10 @@ static void Cmd_getexp(void)
                     {
                         gBattleStruct->expGetterBattlerId = 0;
                     }
+					
+					//experience limit: prevents overflow
+					if (gBattleMoveDamage >= 32000)
+						gBattleMoveDamage = 32000;
 
                     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBattleStruct->expGetterBattlerId, gBattleStruct->expGetterMonId);
                     // buffer 'gained' or 'gained a boosted'
@@ -5975,7 +5983,7 @@ static void Cmd_drawlvlupbox(void)
         SetBgAttribute(1, BG_ATTR_PRIORITY, 0);
         ShowBg(0);
         ShowBg(1);
-        HandleBattleWindow(18, 7, 29, 19, WINDOW_BG1);
+        HandleBattleWindow(18, 3, 29, 15, WINDOW_BG1);
         gBattleScripting.drawlvlupboxState = 4;
         break;
     case 4:
@@ -6009,7 +6017,7 @@ static void Cmd_drawlvlupbox(void)
         {
             // Close level up box
             PlaySE(SE_SELECT);
-            HandleBattleWindow(18, 7, 29, 19, WINDOW_BG1 | WINDOW_CLEAR);
+            HandleBattleWindow(18, 3, 29, 15, WINDOW_BG1 | WINDOW_CLEAR);
             gBattleScripting.drawlvlupboxState++;
         }
         break;
