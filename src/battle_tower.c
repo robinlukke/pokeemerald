@@ -2960,11 +2960,14 @@ void TryHideBattleTowerReporter(void)
 
 static void FillPartnerParty(u16 trainerId)
 {
+	u32 nameHash = 0;
+    u32 personalityValue;
+    u8 fixedIV;
+    u8 ability, gender, friendship;
     s32 i, j;
     u32 ivs, level;
 	u8 PlayerMonLevel;
 	u8 StevenMonLevel;
-    u32 friendship;
     u16 monId;
     u32 otID;
     u8 trainerName[PLAYER_NAME_LENGTH + 1];
@@ -2996,11 +2999,7 @@ static void FillPartnerParty(u16 trainerId)
                       level,
                       sStevenMons[i].fixedIV,
                       TRUE,
-                      #ifdef BUGFIX
                       j,
-                      #else
-                      i, // BUG: personality was stored in the 'j' variable. As a result, Steven's Pokémon do not have the intended natures.
-                      #endif
                       OT_ID_PRESET, STEVEN_OTID);
             for (j = 0; j < PARTY_SIZE; j++)
                 SetMonData(&gPlayerParty[MULTI_PARTY_SIZE + i], MON_DATA_HP_EV + j, &sStevenMons[i].evs[j]);
