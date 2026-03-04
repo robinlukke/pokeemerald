@@ -7,11 +7,11 @@ Route103_EventScript_ItemGuardSpec::
 	end
 
 Route103_EventScript_ItemPPUp::
-	finditem ITEM_PP_UP
+	finditem ITEM_RARE_CANDY
 	end
 
 Route104_EventScript_ItemPPUp::
-	finditem ITEM_PP_UP
+	finditem ITEM_RARE_CANDY
 	end
 
 Route104_EventScript_ItemPokeBall::
@@ -39,7 +39,7 @@ Route108_EventScript_ItemStarPiece::
 	end
 
 Route109_EventScript_ItemPPUp::
-	finditem ITEM_PP_UP
+	finditem ITEM_RARE_CANDY
 	end
 
 Route109_EventScript_ItemPotion::
@@ -123,7 +123,7 @@ Route115_EventScript_ItemHealPowder::
 	end
 
 Route115_EventScript_ItemPPUp::
-	finditem ITEM_PP_UP
+	finditem ITEM_RARE_CANDY
 	end
 
 Route116_EventScript_ItemXSpecial::
@@ -235,7 +235,7 @@ Route123_EventScript_ItemElixir::
 	end
 
 Route123_EventScript_ItemPPUp::
-	finditem ITEM_PP_UP
+	finditem ITEM_RARE_CANDY
 	end
 
 Route123_EventScript_ItemRevivalHerb::
@@ -391,7 +391,7 @@ MeteorFalls_1F_1R_EventScript_ItemMoonStone::
 	end
 
 MeteorFalls_1F_1R_EventScript_ItemPPUP::
-	finditem ITEM_PP_UP
+	finditem ITEM_RARE_CANDY
 	end
 
 MeteorFalls_B1F_2R_EventScript_ItemTMDragonClaw::
@@ -607,7 +607,7 @@ VictoryRoad_1F_EventScript_ItemMaxElixir::
 	end
 
 VictoryRoad_1F_EventScript_ItemPPUp::
-	finditem ITEM_PP_UP
+	finditem ITEM_RARE_CANDY
 	end
 
 VictoryRoad_B1F_EventScript_ItemTMPsychic::
@@ -647,7 +647,7 @@ MagmaHideout_3F_1R_EventScript_ItemNugget::
 	end
 
 MagmaHideout_3F_2R_EventScript_ItemPPMax::
-	finditem ITEM_PP_MAX
+	finditem ITEM_RARE_CANDY
 	end
 
 MagmaHideout_4F_EventScript_ItemMaxRevive::

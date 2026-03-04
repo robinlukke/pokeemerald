@@ -821,8 +821,8 @@ SlateportCity_EventScript_HPUp::
 	end
 
 SlateportCity_EventScript_PPUp::
-	bufferitemname STR_VAR_1, ITEM_PP_UP
-	setvar VAR_0x8008, ITEM_PP_UP
+	bufferitemname STR_VAR_1, ITEM_RARE_CANDY
+	setvar VAR_0x8008, ITEM_RARE_CANDY
 	setvar VAR_0x8009, 3000
 	goto SlateportCity_EventScript_TryBuyBerryPowderItem
 	end

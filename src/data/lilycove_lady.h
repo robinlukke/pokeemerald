@@ -424,10 +424,8 @@ static const u16 sFavorLadyPrizes[] =
 {
     ITEM_LUXURY_BALL,
     ITEM_NUGGET,
-    ITEM_PROTEIN,
     ITEM_HEART_SCALE,
-    ITEM_RARE_CANDY,
-    ITEM_PP_MAX
+    ITEM_RARE_CANDY
 };
 
 
